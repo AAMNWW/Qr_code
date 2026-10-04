@@ -3,560 +3,1540 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All About QR Codes | Haiqa Tariq</title>
+  <title>Decoding QR Codes | Oxbridge Secondary School</title>
+  <meta name="description" content="A school project on QR codes by Haiqa Tariq, Jannat and Zainab of Oxbridge Secondary School.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #4f46e5;
-      --primary-dark: #3730a3;
-      --accent: #f59e0b;
-      --bg: #f8fafc;
+      --ink: #0b1026;
+      --ink-2: #151b3d;
+      --text: #1f2544;
+      --muted: #646a8a;
+      --bg: #f6f6fc;
       --card: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
+      --border: #e6e7f2;
+      --violet: #7c3aed;
+      --cyan: #06b6d4;
+      --pink: #ec4899;
+      --amber: #f59e0b;
+      --green: #10b981;
+      --grad: linear-gradient(135deg, var(--violet), var(--pink) 55%, var(--amber));
+      --grad-cool: linear-gradient(135deg, var(--cyan), var(--violet));
+      --radius: 20px;
+      --shadow: 0 10px 30px rgba(31, 37, 68, 0.08);
+      --shadow-lg: 0 20px 50px rgba(31, 37, 68, 0.16);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
-
     body {
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: "Poppins", "Segoe UI", Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .num { font-family: "Space Grotesk", "Poppins", sans-serif; }
+    img, svg, canvas { display: block; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    /* ---------- Navigation ---------- */
+    /* ================= NAV ================= */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: var(--primary-dark);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      transition: background .3s, box-shadow .3s;
     }
-    nav ul {
+    nav.scrolled {
+      background: rgba(11, 16, 38, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+    }
+    .nav-inner {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      list-style: none;
-      max-width: 1000px;
-      margin: 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      height: 68px;
     }
-    nav a {
-      display: block;
-      padding: 14px 16px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       color: #fff;
+      font-weight: 700;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1.15rem;
+      white-space: nowrap;
     }
-    nav a:hover { background: rgba(255,255,255,0.15); }
+    .logo-mark {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      background: var(--grad);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      padding: 6px;
+    }
+    .logo-mark span { background: #fff; border-radius: 2px; }
+    .logo-mark span:nth-child(2), .logo-mark span:nth-child(4),
+    .logo-mark span:nth-child(6), .logo-mark span:nth-child(8) { background: transparent; }
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a {
+      display: block;
+      padding: 8px 14px;
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 500;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: background .2s, color .2s;
+    }
+    .nav-links a:hover { background: rgba(255,255,255,.12); color: #fff; }
 
-    /* ---------- Header ---------- */
-    header {
-      background: linear-gradient(135deg, var(--primary), #7c3aed);
+    /* ================= HERO ================= */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: var(--ink);
       color: #fff;
-      text-align: center;
-      padding: 70px 16px 60px;
+      overflow: hidden;
+      padding: 110px 0 80px;
     }
-    header h1 { font-size: clamp(2rem, 6vw, 3.2rem); margin-bottom: 10px; }
-    header p.tagline { font-size: 1.2rem; opacity: 0.95; }
-    .student-badge {
-      display: inline-block;
-      margin-top: 24px;
-      padding: 12px 24px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 12px;
+    .hero::before {
+      /* subtle module grid */
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .55;
+      animation: float 14s ease-in-out infinite;
+    }
+    .blob.b1 { width: 420px; height: 420px; background: var(--violet); top: -120px; left: -100px; }
+    .blob.b2 { width: 360px; height: 360px; background: var(--pink); bottom: -140px; right: 10%; animation-delay: -5s; }
+    .blob.b3 { width: 300px; height: 300px; background: var(--cyan); top: 30%; right: -80px; animation-delay: -9s; opacity: .4; }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, -30px) scale(1.1); }
+    }
+    .floating-sq {
+      position: absolute;
+      border: 2px solid rgba(255,255,255,.15);
+      border-radius: 6px;
+      animation: drift 18s linear infinite;
+    }
+    @keyframes drift {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-110vh) rotate(360deg); }
+    }
+    .hero-grid > *, .what-grid > *, .anatomy > *, .ecc-wrap > *, .safety-inner > *, .gen > * { min-width: 0; }
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 50px;
+      align-items: center;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: .85rem;
+      font-weight: 500;
+      margin-bottom: 22px;
+    }
+    .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .hero h1 {
+      font-size: clamp(2.6rem, 6.5vw, 4.6rem);
+      line-height: 1.05;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .hero p.lead {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,.78);
+      max-width: 520px;
+      margin-bottom: 30px;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 36px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-weight: 600;
       font-size: 1rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s;
     }
-    .student-badge strong { color: #fde68a; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 10px 30px rgba(236,72,153,.35); }
+    .btn-primary:hover { box-shadow: 0 14px 36px rgba(236,72,153,.5); }
+    .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.25); }
+    .btn-ghost:hover { background: rgba(255,255,255,.16); }
+    .btn-dark { background: var(--ink); color: #fff; }
+    .btn-dark:hover { box-shadow: var(--shadow-lg); }
+    .btn-light { background: #fff; color: var(--text); border: 2px solid var(--border); }
 
-    /* ---------- Sections ---------- */
-    main { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
-    section { padding: 56px 0 8px; }
-    h2 {
-      font-size: 1.9rem;
-      color: var(--primary-dark);
-      margin-bottom: 16px;
-      padding-bottom: 8px;
-      border-bottom: 4px solid var(--accent);
-      display: inline-block;
+    .hero-team {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: .92rem;
+      color: rgba(255,255,255,.8);
     }
-    h3 { color: var(--primary); margin-bottom: 6px; }
-    p { margin-bottom: 14px; }
+    .avatars { display: flex; }
+    .avatars span {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: #fff;
+      border: 3px solid var(--ink);
+      margin-left: -10px;
+      font-size: .95rem;
+    }
+    .avatars span:first-child { margin-left: 0; }
+    .hero-team strong { color: #fff; }
+
+    /* Hero scanner card */
+    .scanner-wrap { display: flex; justify-content: center; }
+    .scanner {
+      position: relative;
+      padding: 26px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.4);
+      animation: bob 6s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-14px) rotate(2deg); }
+    }
+    .scan-box {
+      position: relative;
+      width: 240px; height: 240px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px;
+      overflow: hidden;
+    }
+    #heroQr { width: 100%; height: 100%; }
+    #heroQr img, #heroQr canvas { width: 100% !important; height: 100% !important; }
+    .scan-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 3px;
+      background: var(--pink);
+      box-shadow: 0 0 18px 4px rgba(236,72,153,.7);
+      animation: scan 2.6s ease-in-out infinite;
+    }
+    @keyframes scan {
+      0%, 100% { top: 6%; }
+      50% { top: 92%; }
+    }
+    .corner {
+      position: absolute;
+      width: 34px; height: 34px;
+      border: 4px solid var(--cyan);
+    }
+    .corner.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; border-radius: 12px 0 0 0; }
+    .corner.tr { top: 12px; right: 12px; border-left: none; border-bottom: none; border-radius: 0 12px 0 0; }
+    .corner.bl { bottom: 12px; left: 12px; border-right: none; border-top: none; border-radius: 0 0 0 12px; }
+    .corner.br { bottom: 12px; right: 12px; border-left: none; border-top: none; border-radius: 0 0 12px 0; }
+    .scanner-caption {
+      text-align: center;
+      margin-top: 16px;
+      font-size: .85rem;
+      color: rgba(255,255,255,.75);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 26px; height: 42px;
+      border: 2px solid rgba(255,255,255,.4);
+      border-radius: 14px;
+    }
+    .scroll-hint::after {
+      content: "";
+      position: absolute;
+      top: 8px; left: 50%;
+      width: 4px; height: 8px;
+      margin-left: -2px;
+      border-radius: 2px;
+      background: #fff;
+      animation: wheel 1.8s infinite;
+    }
+    @keyframes wheel { to { transform: translateY(14px); opacity: 0; } }
+
+    /* ================= STATS ================= */
+    .stats {
+      position: relative;
+      z-index: 2;
+      margin-top: -50px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .stat { padding: 28px 20px; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat .num { font-size: 2.3rem; font-weight: 700; line-height: 1.1; }
+    .stat p { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+
+    /* ================= SECTIONS ================= */
+    section.block { padding: 100px 0 20px; }
+    .section-head { text-align: center; max-width: 680px; margin: 0 auto 50px; }
+    .eyebrow {
+      display: inline-block;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--violet);
+      background: rgba(124,58,237,.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .section-head h2 { font-size: clamp(2rem, 4.5vw, 2.9rem); line-height: 1.15; margin-bottom: 14px; color: var(--ink); }
+    .section-head p { color: var(--muted); font-size: 1.05rem; }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-top: 10px;
-    }
-    .icon { font-size: 2rem; margin-bottom: 6px; }
-
-    .fact-box {
-      background: #fef3c7;
-      border-left: 6px solid var(--accent);
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin: 18px 0;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
     }
 
-    /* ---------- Timeline ---------- */
-    .timeline { border-left: 4px solid var(--primary); margin-left: 10px; padding-left: 24px; }
-    .timeline .event { position: relative; margin-bottom: 22px; }
-    .timeline .event::before {
+    /* What is it */
+    .what-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
+    .what-grid p { margin-bottom: 14px; }
+    .compare { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
+    .compare-item { display: flex; align-items: center; gap: 20px; }
+    .compare-item .label { font-weight: 600; margin-bottom: 2px; color: var(--ink); }
+    .compare-item small { color: var(--muted); }
+    .barcode { display: flex; gap: 2px; height: 64px; flex-shrink: 0; width: 96px; align-items: stretch; }
+    .barcode i { background: var(--ink); }
+    .mini-qr { width: 96px; height: 96px; flex-shrink: 0; }
+    .vs {
+      align-self: center;
+      font-weight: 800;
+      color: var(--pink);
+      font-family: "Space Grotesk", sans-serif;
+    }
+    .fact {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: linear-gradient(135deg, #fff7e6, #fdecf5);
+      border: 1px solid #fbd7a8;
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-top: 30px;
+    }
+    .fact .em { font-size: 1.8rem; line-height: 1; }
+
+    /* Timeline */
+    .timeline { position: relative; max-width: 900px; margin: 0 auto; }
+    .timeline::before {
       content: "";
       position: absolute;
-      left: -34px;
-      top: 6px;
-      width: 16px;
-      height: 16px;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 4px;
+      margin-left: -2px;
+      background: var(--grad);
+      border-radius: 4px;
+    }
+    .t-item { position: relative; width: 50%; padding: 0 40px 40px; }
+    .t-item:nth-child(odd) { left: 0; text-align: right; }
+    .t-item:nth-child(even) { left: 50%; }
+    .t-item::before {
+      content: "";
+      position: absolute;
+      top: 24px;
+      width: 20px; height: 20px;
       border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 2px var(--primary);
-    }
-    .timeline .year { font-weight: 700; color: var(--primary); }
-
-    /* ---------- Table ---------- */
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: var(--card); }
-    th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
-    th { background: var(--primary); color: #fff; }
-    tr:nth-child(even) td { background: #f1f5f9; }
-
-    /* ---------- Pros / Cons ---------- */
-    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
-    .pros h3 { color: #16a34a; }
-    .cons h3 { color: #dc2626; }
-    .pros ul, .cons ul, .card ul { padding-left: 20px; }
-    li { margin-bottom: 6px; }
-
-    /* ---------- Generator ---------- */
-    .generator { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: center; }
-    label { font-weight: 600; display: block; margin-bottom: 6px; }
-    input[type="text"], select {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 14px;
-    }
-    input[type="text"]:focus, select:focus { outline: none; border-color: var(--primary); }
-    button {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 12px 22px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-right: 8px;
-      margin-bottom: 8px;
-    }
-    button:hover { background: var(--primary-dark); }
-    button.secondary { background: var(--accent); color: #1e293b; }
-    #qrOutput {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 260px;
       background: #fff;
-      border: 2px dashed var(--border);
-      border-radius: 14px;
-      padding: 20px;
+      border: 5px solid var(--pink);
+      box-shadow: 0 0 0 6px rgba(236,72,153,.15);
     }
-    #qrOutput img, #qrOutput canvas { max-width: 100%; }
-    .hint { color: var(--muted); font-size: 0.9rem; }
+    .t-item:nth-child(odd)::before { right: -10px; }
+    .t-item:nth-child(even)::before { left: -10px; }
+    .t-item .card { padding: 22px 24px; transition: transform .25s, box-shadow .25s; }
+    .t-item .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .t-year {
+      display: inline-block;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 4px;
+    }
 
-    /* ---------- Quiz ---------- */
-    .question { margin-bottom: 20px; }
-    .question p { font-weight: 600; margin-bottom: 8px; }
-    .options label {
-      font-weight: 400;
-      display: block;
-      padding: 8px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 6px;
+    /* Anatomy */
+    .anatomy { display: grid; grid-template-columns: 420px 1fr; gap: 40px; align-items: center; }
+    .diagram-card { padding: 30px; position: sticky; top: 90px; }
+    #anatomySvg { width: 100%; height: auto; }
+    #anatomySvg .m { fill: var(--ink); transition: fill .3s, opacity .3s; }
+    #anatomySvg .quiet { fill: transparent; stroke: #c9cbe0; stroke-dasharray: .4 .3; stroke-width: .12; transition: fill .3s; }
+    #anatomySvg[data-hl] .m { opacity: .12; }
+    #anatomySvg[data-hl="finder"] .finder { opacity: 1; fill: var(--pink); }
+    #anatomySvg[data-hl="align"]  .align  { opacity: 1; fill: var(--violet); }
+    #anatomySvg[data-hl="timing"] .timing { opacity: 1; fill: var(--cyan); }
+    #anatomySvg[data-hl="data"]   .data   { opacity: 1; fill: var(--green); }
+    #anatomySvg[data-hl="ecc"]    .ecc    { opacity: 1; fill: var(--amber); }
+    #anatomySvg[data-hl="quiet"]  .quiet  { fill: rgba(6,182,212,.25); stroke: var(--cyan); }
+    .diagram-hint { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 14px; }
+
+    .parts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .part {
       cursor: pointer;
+      padding: 20px;
+      border-radius: 16px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+      outline: none;
     }
-    .options label:hover { background: #eef2ff; }
-    .options label.correct { background: #dcfce7; border-color: #16a34a; }
-    .options label.wrong { background: #fee2e2; border-color: #dc2626; }
-    #quizResult { font-size: 1.2rem; font-weight: 700; margin-top: 10px; }
+    .part:hover, .part:focus, .part.active { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .part h3 { display: flex; align-items: center; gap: 10px; font-size: 1.08rem; color: var(--ink); margin-bottom: 4px; }
+    .part p { font-size: .92rem; color: var(--muted); }
+    .swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+    .part[data-part="finder"]:is(:hover, :focus, .active) { border-color: var(--pink); }
+    .part[data-part="align"]:is(:hover, :focus, .active)  { border-color: var(--violet); }
+    .part[data-part="timing"]:is(:hover, :focus, .active) { border-color: var(--cyan); }
+    .part[data-part="quiet"]:is(:hover, :focus, .active)  { border-color: var(--cyan); }
+    .part[data-part="data"]:is(:hover, :focus, .active)   { border-color: var(--green); }
+    .part[data-part="ecc"]:is(:hover, :focus, .active)    { border-color: var(--amber); }
 
-    /* ---------- Footer ---------- */
-    footer {
-      margin-top: 60px;
-      background: var(--primary-dark);
-      color: #e0e7ff;
-      text-align: center;
-      padding: 30px 16px;
+    .binary {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
-    footer strong { color: #fff; }
+    .bits { display: flex; gap: 6px; }
+    .bits span {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-family: "Space Grotesk", sans-serif;
+      border: 2px solid var(--ink);
+    }
+    .bits span.on { background: var(--ink); color: #fff; }
+
+    /* Error correction */
+    .ecc-wrap { margin-top: 60px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; align-items: center; }
+    .ecc-wrap h3 { font-size: 1.6rem; color: var(--ink); margin-bottom: 10px; }
+    .ecc-row { display: grid; grid-template-columns: 34px 1fr 54px; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .ecc-row:last-child { margin-bottom: 0; }
+    .ecc-level {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: #fff;
+      background: var(--ink);
+    }
+    .ecc-track { height: 14px; background: #eef0f8; border-radius: 999px; overflow: hidden; }
+    .ecc-fill { height: 100%; width: 0; border-radius: 999px; background: var(--grad); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
+    .ecc-row small { color: var(--muted); display: block; font-size: .8rem; margin-top: 2px; }
+    .ecc-pct { font-weight: 700; font-family: "Space Grotesk", sans-serif; text-align: right; }
+
+    /* Uses */
+    .uses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .use {
+      position: relative;
+      padding: 26px 22px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .use::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 4px;
+      background: var(--grad);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s;
+    }
+    .use:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .use:hover::after { transform: scaleX(1); }
+    .use-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.7rem;
+      margin-bottom: 16px;
+    }
+    .use h3 { font-size: 1.1rem; color: var(--ink); margin-bottom: 4px; }
+    .use p { font-size: .9rem; color: var(--muted); }
+
+    /* Pros & cons */
+    .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+    .pc { border-radius: var(--radius); padding: 32px; color: #fff; position: relative; overflow: hidden; }
+    .pc.pros { background: linear-gradient(135deg, #059669, #10b981 60%, #34d399); }
+    .pc.cons { background: linear-gradient(135deg, #be123c, #e11d48 60%, #fb7185); }
+    .pc::before {
+      content: "";
+      position: absolute;
+      width: 220px; height: 220px;
+      right: -60px; top: -60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+    }
+    .pc h3 { font-size: 1.5rem; margin-bottom: 18px; position: relative; }
+    .pc ul { list-style: none; position: relative; }
+    .pc li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.2);
+    }
+    .pc li:last-child { border-bottom: none; }
+    .pc li b {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.22);
+      display: grid;
+      place-items: center;
+      font-size: .8rem;
+      margin-top: 2px;
+    }
+
+    /* Safety */
+    .safety {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 28px;
+      padding: 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    .safety::before {
+      content: "";
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: var(--violet);
+      filter: blur(100px);
+      opacity: .45;
+      top: -150px; right: -100px;
+    }
+    .safety-inner { position: relative; display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center; }
+    .safety h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15; margin-bottom: 14px; }
+    .safety p.lead { color: rgba(255,255,255,.75); }
+    .tips { display: grid; gap: 14px; }
+    .tip {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: background .25s, transform .25s;
+    }
+    .tip:hover { background: rgba(255,255,255,.12); transform: translateX(6px); }
+    .tip .em { font-size: 1.6rem; }
+    .tip strong { display: block; }
+    .tip span { color: rgba(255,255,255,.7); font-size: .9rem; }
+
+    /* Generator */
+    .gen {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .gen-form { padding: 40px; }
+    .gen-preview {
+      background: linear-gradient(135deg, #f3e8ff, #fce7f3 50%, #e0f2fe);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      gap: 18px;
+    }
+    .qr-frame {
+      background: #fff;
+      padding: 18px;
+      border-radius: 22px;
+      box-shadow: var(--shadow-lg);
+    }
+    #qrOutput { width: 220px; height: 220px; display: grid; place-items: center; text-align: center; color: var(--muted); font-size: .9rem; }
+    #qrOutput img, #qrOutput canvas { width: 220px !important; height: 220px !important; }
+    label.field { display: block; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+    .input {
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-family: inherit;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 22px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .input:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 4px rgba(124,58,237,.12); }
+    .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 22px; }
+    .preset {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-family: inherit;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .preset:hover { border-color: var(--violet); background: #f5f0ff; }
+    .colors { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .color {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--border);
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .color:hover { transform: scale(1.1); }
+    .color.active { box-shadow: 0 0 0 3px var(--ink); }
+    .gen-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .gen-preview small { color: var(--muted); text-align: center; }
+
+    /* Quiz */
+    .quiz { max-width: 760px; margin: 0 auto; padding: 40px; }
+    .quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; color: var(--muted); font-size: .9rem; }
+    .progress { height: 8px; border-radius: 999px; background: #eef0f8; overflow: hidden; margin-bottom: 30px; }
+    .progress div { height: 100%; width: 0; background: var(--grad); transition: width .4s; }
+    .q-text { font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 20px; font-family: "Space Grotesk", sans-serif; }
+    .options { display: grid; gap: 12px; }
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      text-align: left;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      background: #fff;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+    .opt:hover:not(:disabled) { border-color: var(--violet); transform: translateX(4px); }
+    .opt .letter {
+      width: 32px; height: 32px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      background: #f1f2f9;
+    }
+    .opt.correct { border-color: var(--green); background: #ecfdf5; }
+    .opt.correct .letter { background: var(--green); color: #fff; }
+    .opt.wrong { border-color: #e11d48; background: #fff1f2; }
+    .opt.wrong .letter { background: #e11d48; color: #fff; }
+    .opt:disabled { cursor: default; }
+    .quiz-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; min-height: 52px; gap: 12px; flex-wrap: wrap; }
+    .feedback { font-weight: 600; }
+    .result { text-align: center; padding: 10px 0; }
+    .result .big { font-size: 4rem; font-weight: 700; font-family: "Space Grotesk", sans-serif; line-height: 1; }
+    .result p { color: var(--muted); margin: 10px 0 24px; font-size: 1.1rem; }
+
+    /* Team */
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; max-width: 960px; margin: 0 auto; }
+    .member {
+      text-align: center;
+      padding: 40px 24px 32px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .member::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 90px;
+      opacity: .14;
+    }
+    .member:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+    .member .avatar {
+      position: relative;
+      width: 110px; height: 110px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      font-family: "Space Grotesk", sans-serif;
+      color: #fff;
+      box-shadow: 0 0 0 6px #fff, 0 12px 30px rgba(0,0,0,.15);
+    }
+    .member h3 { font-size: 1.4rem; color: var(--ink); }
+    .member p { color: var(--muted); font-size: .92rem; }
+    .member .school-tag {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: #f3f4fb;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--violet);
+    }
+    .g1 { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+    .g2 { background: linear-gradient(135deg, #06b6d4, #7c3aed); }
+    .g3 { background: linear-gradient(135deg, #f59e0b, #ec4899); }
+    .member.m1::before { background: linear-gradient(135deg, #7c3aed, #ec4899); }
+    .member.m2::before { background: linear-gradient(135deg, #06b6d4, #7c3aed); }
+    .member.m3::before { background: linear-gradient(135deg, #f59e0b, #ec4899); }
+
+    /* Footer */
+    footer {
+      margin-top: 110px;
+      background: var(--ink);
+      color: rgba(255,255,255,.75);
+      padding: 60px 0 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--grad);
+    }
+    .foot-grid { display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
+    .foot-grid h3 { color: #fff; font-size: 1.5rem; margin-bottom: 6px; }
+    .foot-grid strong { color: #fff; }
+    .foot-qr { background: #fff; padding: 10px; border-radius: 14px; }
+    #footQr { width: 110px; height: 110px; }
+    #footQr img, #footQr canvas { width: 110px !important; height: 110px !important; }
+    .foot-bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1); text-align: center; font-size: .85rem; }
+
+    /* Reveal on scroll */
+    .js .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 960px) {
+      .hero-grid, .what-grid, .anatomy, .ecc-wrap, .safety-inner, .gen { grid-template-columns: 1fr; }
+      .hero { text-align: center; }
+      .hero p.lead { margin-left: auto; margin-right: auto; }
+      .hero-actions, .hero-team { justify-content: center; }
+      .uses-grid { grid-template-columns: repeat(2, 1fr); }
+      .diagram-card { position: static; max-width: 420px; margin: 0 auto; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 720px) {
+      .logo-text { display: none; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat:nth-child(2) { border-right: none; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+      .timeline::before { left: 10px; }
+      .t-item, .t-item:nth-child(even) { width: 100%; left: 0; text-align: left; padding: 0 0 30px 40px; }
+      .t-item:nth-child(odd)::before, .t-item:nth-child(even)::before { left: 0; right: auto; }
+      .parts, .pc-grid, .team-grid { grid-template-columns: 1fr; }
+      .safety { padding: 36px 22px; }
+      .gen-form, .quiz { padding: 26px 20px; }
+      section.block { padding-top: 80px; }
+    }
+    @media (max-width: 480px) {
+      .uses-grid { grid-template-columns: 1fr; }
+      .scan-box { width: 200px; height: 200px; }
+      .compare-item { flex-direction: column; text-align: center; gap: 10px; }
+    }
   </style>
 </head>
 <body>
+<script>document.documentElement.classList.add("js");</script>
 
-  <nav>
-    <ul>
-      <li><a href="#what">What is it?</a></li>
-      <li><a href="#history">History</a></li>
-      <li><a href="#how">How it Works</a></li>
-      <li><a href="#uses">Uses</a></li>
-      <li><a href="#pros-cons">Pros &amp; Cons</a></li>
-      <li><a href="#safety">Safety</a></li>
-      <li><a href="#generator">Make a QR</a></li>
-      <li><a href="#quiz">Quiz</a></li>
-    </ul>
+  <!-- ================= NAV ================= -->
+  <nav id="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="logo">
+        <span class="logo-mark"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
+        <span class="logo-text">QR Explained</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#what">Basics</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="#how">How it Works</a></li>
+        <li><a href="#uses">Uses</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#generator">Make One</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        <li><a href="#team">Our Team</a></li>
+      </ul>
+    </div>
   </nav>
 
-  <header>
-    <h1>All About QR Codes</h1>
-    <p class="tagline">The little black-and-white squares that connect our world</p>
-    <div class="student-badge">
-      A school project by <strong>Haiqa Tariq</strong><br>
-      Oxbridge Secondary School
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div id="floaters"></div>
+
+    <div class="container hero-grid">
+      <div>
+        <div class="pill"><span class="dot"></span> Oxbridge Secondary School &middot; School Project</div>
+        <h1>Decoding the <span class="grad-text">QR Code</span></h1>
+        <p class="lead">
+          The little black-and-white squares that link the real world to the digital one.
+          Find out where they came from, how they work, and how to make your own.
+        </p>
+        <div class="hero-actions">
+          <a href="#what" class="btn btn-primary">Start Exploring &rarr;</a>
+          <a href="#generator" class="btn btn-ghost">Make a QR Code</a>
+        </div>
+        <div class="hero-team">
+          <div class="avatars">
+            <span class="g1">H</span>
+            <span class="g2">J</span>
+            <span class="g3">Z</span>
+          </div>
+          <div>Made by <strong>Haiqa Tariq</strong>, <strong>Jannat</strong> &amp; <strong>Zainab</strong></div>
+        </div>
+      </div>
+
+      <div class="scanner-wrap">
+        <div class="scanner">
+          <div class="scan-box">
+            <div id="heroQr"></div>
+            <div class="scan-line"></div>
+          </div>
+          <span class="corner tl"></span><span class="corner tr"></span>
+          <span class="corner bl"></span><span class="corner br"></span>
+          <div class="scanner-caption">📱 Scan me with your phone camera!</div>
+        </div>
+      </div>
     </div>
+    <a href="#what" class="scroll-hint" aria-label="Scroll down"></a>
   </header>
+
+  <!-- ================= STATS ================= -->
+  <div class="stats">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div class="stat"><div class="num grad-text" data-count="1994">1994</div><p>Year it was invented</p></div>
+        <div class="stat"><div class="num grad-text" data-count="7089">7,089</div><p>Numbers it can store</p></div>
+        <div class="stat"><div class="num grad-text" data-count="30" data-suffix="%">30%</div><p>Damage it can survive</p></div>
+        <div class="stat"><div class="num grad-text" data-count="40">40</div><p>Different sizes</p></div>
+      </div>
+    </div>
+  </div>
 
   <main>
 
-    <!-- What is a QR code -->
-    <section id="what">
-      <h2>What is a QR Code?</h2>
-      <p>
-        A <strong>QR code</strong> (short for <strong>Quick Response code</strong>) is a type of
-        two-dimensional barcode. It is made of black squares arranged in a square grid on a white
-        background. A smartphone camera or a scanner can read it in less than a second and turn it
-        into useful information such as a website link, a phone number, a Wi-Fi password or a message.
-      </p>
-      <p>
-        A normal barcode (like the one on a chocolate bar) stores information in only one direction —
-        left to right. A QR code stores information both <strong>horizontally and vertically</strong>,
-        which is why it can hold much more data.
-      </p>
-      <div class="fact-box">
-        <strong>Did you know?</strong> A single QR code can store up to <strong>7,089 numbers</strong>
-        or <strong>4,296 letters and numbers</strong>, while a normal barcode holds only about 20 characters!
-      </div>
-    </section>
+    <!-- ================= WHAT ================= -->
+    <section class="block" id="what">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">The Basics</span>
+          <h2>What is a <span class="grad-text">QR Code?</span></h2>
+          <p>A barcode that went 2D and became a superstar.</p>
+        </div>
 
-    <!-- History -->
-    <section id="history">
-      <h2>History of the QR Code</h2>
-      <div class="timeline">
-        <div class="event">
-          <span class="year">1994</span>
-          <p>The QR code was invented in Japan by <strong>Masahiro Hara</strong>, an engineer at
-          <strong>Denso Wave</strong>, a company that is part of the Toyota group. It was created to
-          track car parts quickly in factories, because normal barcodes were too slow and held too little information.</p>
-        </div>
-        <div class="event">
-          <span class="year">Late 1990s</span>
-          <p>Denso Wave decided not to charge anyone for using the QR code design, so anyone in the
-          world could create and use QR codes for free. This helped it spread quickly.</p>
-        </div>
-        <div class="event">
-          <span class="year">2000s</span>
-          <p>QR codes became an international standard (ISO/IEC 18004) and mobile phones in Japan
-          started coming with QR code readers.</p>
-        </div>
-        <div class="event">
-          <span class="year">2017</span>
-          <p>Phone cameras on iPhone and Android started scanning QR codes automatically, with no extra app needed.</p>
-        </div>
-        <div class="event">
-          <span class="year">2020 – Today</span>
-          <p>During the COVID-19 pandemic, QR codes became part of everyday life for contactless menus,
-          payments, and check-ins. Today they are used almost everywhere!</p>
-        </div>
-      </div>
-    </section>
+        <div class="what-grid">
+          <div class="card reveal">
+            <p>
+              A <strong>QR code</strong> — short for <strong>Quick Response code</strong> — is a
+              two-dimensional barcode made of black squares arranged on a white square grid.
+            </p>
+            <p>
+              A smartphone camera can read it in under a second and turn it into useful information:
+              a website link, a phone number, a Wi-Fi password, a payment or a secret message.
+            </p>
+            <p>
+              A normal barcode stores information in only <strong>one direction</strong> (left to right).
+              A QR code stores it <strong>both across and down</strong>, so it can hold hundreds of times more data.
+            </p>
+          </div>
 
-    <!-- How it works -->
-    <section id="how">
-      <h2>How Does a QR Code Work?</h2>
-      <p>
-        Every QR code is made of tiny squares called <strong>modules</strong>. A black module means
-        <strong>1</strong> and a white module means <strong>0</strong> — this is called
-        <strong>binary code</strong>, the language computers understand. The phone reads these
-        patterns and converts them back into text or a link.
-      </p>
-      <p>Each QR code has special parts that help the scanner read it:</p>
-
-      <div class="grid">
-        <div class="card">
-          <div class="icon">🔲</div>
-          <h3>Finder Patterns</h3>
-          <p>The three big squares in the corners. They tell the scanner where the code is and which way up it is.</p>
-        </div>
-        <div class="card">
-          <div class="icon">🎯</div>
-          <h3>Alignment Pattern</h3>
-          <p>A smaller square near the bottom-right corner that helps read the code even if it is tilted or curved.</p>
-        </div>
-        <div class="card">
-          <div class="icon">📏</div>
-          <h3>Timing Patterns</h3>
-          <p>Lines of alternating black and white squares that help the scanner work out the size of the grid.</p>
-        </div>
-        <div class="card">
-          <div class="icon">⬜</div>
-          <h3>Quiet Zone</h3>
-          <p>The empty white border around the code. It separates the QR code from everything around it.</p>
-        </div>
-        <div class="card">
-          <div class="icon">💾</div>
-          <h3>Data Area</h3>
-          <p>All the remaining squares, which hold the actual information plus backup data.</p>
-        </div>
-        <div class="card">
-          <div class="icon">🛠️</div>
-          <h3>Error Correction</h3>
-          <p>Extra backup data that lets the code still work even if part of it is dirty, scratched or covered.</p>
-        </div>
-      </div>
-
-      <h3 style="margin-top:28px;">Error Correction Levels</h3>
-      <p>QR codes can still be read even when part of them is damaged. There are four levels:</p>
-      <table>
-        <tr><th>Level</th><th>Name</th><th>Damage it can survive</th></tr>
-        <tr><td>L</td><td>Low</td><td>About 7%</td></tr>
-        <tr><td>M</td><td>Medium</td><td>About 15%</td></tr>
-        <tr><td>Q</td><td>Quartile</td><td>About 25%</td></tr>
-        <tr><td>H</td><td>High</td><td>About 30%</td></tr>
-      </table>
-      <div class="fact-box">
-        <strong>Fun fact:</strong> Because of error correction, some companies put their logo in the
-        middle of a QR code and it still scans perfectly!
-      </div>
-    </section>
-
-    <!-- Uses -->
-    <section id="uses">
-      <h2>Where Are QR Codes Used?</h2>
-      <div class="grid">
-        <div class="card"><div class="icon">🍽️</div><h3>Restaurants</h3><p>Digital menus and ordering food from your table.</p></div>
-        <div class="card"><div class="icon">💳</div><h3>Payments</h3><p>Paying in shops using mobile wallets and banking apps.</p></div>
-        <div class="card"><div class="icon">🎫</div><h3>Tickets</h3><p>Boarding passes, cinema tickets and event entry.</p></div>
-        <div class="card"><div class="icon">🏫</div><h3>Education</h3><p>Linking worksheets to videos, quizzes and online lessons.</p></div>
-        <div class="card"><div class="icon">📦</div><h3>Shipping</h3><p>Tracking parcels and products in warehouses.</p></div>
-        <div class="card"><div class="icon">📶</div><h3>Wi-Fi Sharing</h3><p>Connecting to Wi-Fi without typing a long password.</p></div>
-        <div class="card"><div class="icon">🏥</div><h3>Healthcare</h3><p>Patient wristbands and medicine information.</p></div>
-        <div class="card"><div class="icon">📢</div><h3>Advertising</h3><p>Posters and products that link to websites and offers.</p></div>
-      </div>
-    </section>
-
-    <!-- Pros and cons -->
-    <section id="pros-cons">
-      <h2>Advantages &amp; Disadvantages</h2>
-      <div class="two-col">
-        <div class="card pros">
-          <h3>✅ Advantages</h3>
-          <ul>
-            <li>Very fast to scan — "Quick Response"</li>
-            <li>Stores much more data than a normal barcode</li>
-            <li>Free to create and use</li>
-            <li>Works even when partly damaged</li>
-            <li>Can be scanned from any angle</li>
-            <li>Contactless and hygienic</li>
-            <li>Saves paper (e.g. digital menus)</li>
-          </ul>
-        </div>
-        <div class="card cons">
-          <h3>❌ Disadvantages</h3>
-          <ul>
-            <li>You need a smartphone or scanner to read it</li>
-            <li>Often needs internet to open links</li>
-            <li>Humans can't tell where a code leads just by looking</li>
-            <li>Scammers can use fake QR codes</li>
-            <li>Does not work well if printed too small or blurry</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Safety -->
-    <section id="safety">
-      <h2>Staying Safe with QR Codes</h2>
-      <p>Some people create fake QR codes to trick others (this is called <strong>"quishing"</strong> — QR phishing). Follow these tips:</p>
-      <div class="card">
-        <ul>
-          <li>🔍 <strong>Check the link</strong> your phone shows before opening it.</li>
-          <li>🏷️ <strong>Look for stickers</strong> placed on top of real QR codes in public places.</li>
-          <li>🔐 <strong>Never enter passwords</strong> or bank details on a site opened from an unknown QR code.</li>
-          <li>📲 <strong>Don't download apps</strong> from QR codes unless you trust the source.</li>
-          <li>👨‍👩‍👧 <strong>Ask an adult</strong> if you're not sure whether a QR code is safe.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Generator -->
-    <section id="generator">
-      <h2>Make Your Own QR Code!</h2>
-      <p>Type anything below — a website, a message, or your name — and create your own QR code. Then scan it with a phone camera!</p>
-      <div class="card generator">
-        <div>
-          <label for="qrText">Text or website link</label>
-          <input type="text" id="qrText" value="Hello from Haiqa Tariq, Oxbridge Secondary School!">
-
-          <label for="qrColor">Colour</label>
-          <select id="qrColor">
-            <option value="#000000">Black</option>
-            <option value="#3730a3">Indigo</option>
-            <option value="#b91c1c">Red</option>
-            <option value="#15803d">Green</option>
-            <option value="#7c3aed">Purple</option>
-          </select>
-
-          <button id="makeBtn">Generate QR Code</button>
-          <button id="downloadBtn" class="secondary">Download</button>
-          <p class="hint" id="qrHint">Tip: Open your phone camera and point it at the code.</p>
-        </div>
-        <div id="qrOutput"></div>
-      </div>
-    </section>
-
-    <!-- Quiz -->
-    <section id="quiz">
-      <h2>Test Your Knowledge</h2>
-      <div class="card" id="quizBox">
-        <div class="question" data-answer="b">
-          <p>1. What does "QR" stand for?</p>
-          <div class="options">
-            <label><input type="radio" name="q1" value="a"> Quick Read</label>
-            <label><input type="radio" name="q1" value="b"> Quick Response</label>
-            <label><input type="radio" name="q1" value="c"> Quality Record</label>
+          <div class="card compare reveal">
+            <div class="compare-item">
+              <div class="barcode" id="barcode"></div>
+              <div>
+                <div class="label">Normal Barcode (1D)</div>
+                <small>Reads one way only &middot; about 20 characters</small>
+              </div>
+            </div>
+            <div class="vs">VS</div>
+            <div class="compare-item">
+              <svg class="mini-qr" id="miniQr" viewBox="0 0 21 21" shape-rendering="crispEdges"></svg>
+              <div>
+                <div class="label">QR Code (2D)</div>
+                <small>Reads both ways &middot; up to 4,296 letters &amp; numbers</small>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="question" data-answer="c">
-          <p>2. In which country was the QR code invented?</p>
-          <div class="options">
-            <label><input type="radio" name="q2" value="a"> USA</label>
-            <label><input type="radio" name="q2" value="b"> China</label>
-            <label><input type="radio" name="q2" value="c"> Japan</label>
+
+        <div class="fact reveal">
+          <div class="em">💡</div>
+          <div><strong>Did you know?</strong> It's called "Quick Response" because it was designed to be
+          read <em>very fast</em> — about 10 times faster than other codes at the time.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HISTORY ================= -->
+    <section class="block" id="history">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">History</span>
+          <h2>From Car Factories to <span class="grad-text">Every Pocket</span></h2>
+          <p>How a tool for tracking car parts took over the world.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="t-item reveal">
+            <div class="card">
+              <span class="t-year grad-text">1994</span>
+              <p>Invented in Japan by engineer <strong>Masahiro Hara</strong> at <strong>Denso Wave</strong>,
+              part of the Toyota group, to track car parts quickly in factories.</p>
+            </div>
+          </div>
+          <div class="t-item reveal">
+            <div class="card">
+              <span class="t-year grad-text">Free for All</span>
+              <p>Denso Wave chose not to charge anyone for using the QR code design, so anyone in the world
+              could make and use them for free.</p>
+            </div>
+          </div>
+          <div class="t-item reveal">
+            <div class="card">
+              <span class="t-year grad-text">2000s</span>
+              <p>QR codes became an international standard (ISO/IEC 18004) and phones in Japan
+              started coming with QR readers built in.</p>
+            </div>
+          </div>
+          <div class="t-item reveal">
+            <div class="card">
+              <span class="t-year grad-text">2017</span>
+              <p>iPhone and Android cameras began scanning QR codes automatically, with no extra app needed.</p>
+            </div>
+          </div>
+          <div class="t-item reveal">
+            <div class="card">
+              <span class="t-year grad-text">2020 – Today</span>
+              <p>The COVID-19 pandemic made QR codes part of daily life for contactless menus,
+              payments and check-ins. Now they're everywhere!</p>
+            </div>
           </div>
         </div>
-        <div class="question" data-answer="a">
-          <p>3. What was the QR code first used for?</p>
-          <div class="options">
-            <label><input type="radio" name="q3" value="a"> Tracking car parts</label>
-            <label><input type="radio" name="q3" value="b"> Paying in shops</label>
-            <label><input type="radio" name="q3" value="c"> Restaurant menus</label>
+      </div>
+    </section>
+
+    <!-- ================= HOW ================= -->
+    <section class="block" id="how">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">How it Works</span>
+          <h2>Inside a <span class="grad-text">QR Code</span></h2>
+          <p>Every QR code has special parts. Tap or hover over a part to see where it is.</p>
+        </div>
+
+        <div class="anatomy">
+          <div class="card diagram-card reveal">
+            <svg id="anatomySvg" viewBox="-2 -2 29 29" shape-rendering="crispEdges" aria-label="Diagram of the parts of a QR code"></svg>
+            <div class="diagram-hint">👆 Pick a part to highlight it</div>
+          </div>
+
+          <div>
+            <div class="parts">
+              <div class="part reveal" tabindex="0" data-part="finder">
+                <h3><span class="swatch" style="background:var(--pink)"></span>Finder Patterns</h3>
+                <p>The three big squares in the corners. They tell the scanner where the code is and which way up it is.</p>
+              </div>
+              <div class="part reveal" tabindex="0" data-part="align">
+                <h3><span class="swatch" style="background:var(--violet)"></span>Alignment Pattern</h3>
+                <p>A smaller square that helps read the code even when it's tilted or on a curved surface.</p>
+              </div>
+              <div class="part reveal" tabindex="0" data-part="timing">
+                <h3><span class="swatch" style="background:var(--cyan)"></span>Timing Patterns</h3>
+                <p>Dotted lines of black and white that help the scanner measure the size of the grid.</p>
+              </div>
+              <div class="part reveal" tabindex="0" data-part="quiet">
+                <h3><span class="swatch" style="background:rgba(6,182,212,.35); border:1px dashed var(--cyan)"></span>Quiet Zone</h3>
+                <p>The empty white border that separates the code from everything around it.</p>
+              </div>
+              <div class="part reveal" tabindex="0" data-part="data">
+                <h3><span class="swatch" style="background:var(--green)"></span>Data Area</h3>
+                <p>All the other squares, which hold the actual information.</p>
+              </div>
+              <div class="part reveal" tabindex="0" data-part="ecc">
+                <h3><span class="swatch" style="background:var(--amber)"></span>Error Correction</h3>
+                <p>Backup data mixed into the code so it still works if part of it is dirty or scratched.</p>
+              </div>
+            </div>
+
+            <div class="binary reveal">
+              <div class="bits">
+                <span class="on">1</span><span>0</span><span class="on">1</span><span class="on">1</span><span>0</span><span>0</span><span class="on">1</span>
+              </div>
+              <p style="flex:1; min-width:220px; color:var(--muted)">
+                Each tiny square is called a <strong style="color:var(--ink)">module</strong>.
+                Black = <strong style="color:var(--ink)">1</strong>, white = <strong style="color:var(--ink)">0</strong>.
+                This is <strong style="color:var(--ink)">binary</strong>, the language computers understand.
+              </p>
+            </div>
           </div>
         </div>
-        <div class="question" data-answer="b">
-          <p>4. How many big "finder" squares does a QR code have?</p>
-          <div class="options">
-            <label><input type="radio" name="q4" value="a"> 2</label>
-            <label><input type="radio" name="q4" value="b"> 3</label>
-            <label><input type="radio" name="q4" value="c"> 4</label>
+
+        <div class="ecc-wrap">
+          <div class="reveal">
+            <h3>Error Correction Levels</h3>
+            <p style="color:var(--muted)">QR codes have built-in backup data, so they can still be scanned when part of them is damaged.
+            That's why some companies can put a logo right in the middle of a QR code and it still works!</p>
+          </div>
+          <div class="card reveal" id="eccCard">
+            <div class="ecc-row">
+              <div class="ecc-level">L</div>
+              <div><div class="ecc-track"><div class="ecc-fill" data-w="7"></div></div><small>Low</small></div>
+              <div class="ecc-pct">7%</div>
+            </div>
+            <div class="ecc-row">
+              <div class="ecc-level">M</div>
+              <div><div class="ecc-track"><div class="ecc-fill" data-w="15"></div></div><small>Medium</small></div>
+              <div class="ecc-pct">15%</div>
+            </div>
+            <div class="ecc-row">
+              <div class="ecc-level">Q</div>
+              <div><div class="ecc-track"><div class="ecc-fill" data-w="25"></div></div><small>Quartile</small></div>
+              <div class="ecc-pct">25%</div>
+            </div>
+            <div class="ecc-row">
+              <div class="ecc-level">H</div>
+              <div><div class="ecc-track"><div class="ecc-fill" data-w="30"></div></div><small>High</small></div>
+              <div class="ecc-pct">30%</div>
+            </div>
           </div>
         </div>
-        <div class="question" data-answer="c">
-          <p>5. With the highest error correction (H), how much of a QR code can be damaged and still work?</p>
-          <div class="options">
-            <label><input type="radio" name="q5" value="a"> About 7%</label>
-            <label><input type="radio" name="q5" value="b"> About 15%</label>
-            <label><input type="radio" name="q5" value="c"> About 30%</label>
+      </div>
+    </section>
+
+    <!-- ================= USES ================= -->
+    <section class="block" id="uses">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Everyday Life</span>
+          <h2>Where Do We <span class="grad-text">Use Them?</span></h2>
+          <p>Look around — you'll spot QR codes almost everywhere.</p>
+        </div>
+        <div class="uses-grid">
+          <div class="use reveal"><div class="use-icon" style="background:#fce7f3">🍽️</div><h3>Restaurants</h3><p>Digital menus and ordering from your table.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#ede9fe">💳</div><h3>Payments</h3><p>Paying in shops with mobile wallets and banking apps.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#e0f2fe">🎫</div><h3>Tickets</h3><p>Boarding passes, cinema tickets and event entry.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#fef3c7">🏫</div><h3>Education</h3><p>Linking worksheets to videos, quizzes and lessons.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#dcfce7">📦</div><h3>Shipping</h3><p>Tracking parcels and products in warehouses.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#fee2e2">📶</div><h3>Wi-Fi Sharing</h3><p>Join a network without typing a long password.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#cffafe">🏥</div><h3>Healthcare</h3><p>Patient wristbands and medicine information.</p></div>
+          <div class="use reveal"><div class="use-icon" style="background:#f3e8ff">📢</div><h3>Advertising</h3><p>Posters and products that link to offers online.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROS & CONS ================= -->
+    <section class="block" id="pros-cons">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Weighing it Up</span>
+          <h2>The Good &amp; <span class="grad-text">The Not-So-Good</span></h2>
+        </div>
+        <div class="pc-grid">
+          <div class="pc pros reveal">
+            <h3>👍 Advantages</h3>
+            <ul>
+              <li><b>✓</b> Super fast to scan — "Quick Response"</li>
+              <li><b>✓</b> Stores far more data than a normal barcode</li>
+              <li><b>✓</b> Free to create and use</li>
+              <li><b>✓</b> Still works when partly damaged</li>
+              <li><b>✓</b> Can be scanned from any angle</li>
+              <li><b>✓</b> Contactless and saves paper</li>
+            </ul>
+          </div>
+          <div class="pc cons reveal">
+            <h3>👎 Disadvantages</h3>
+            <ul>
+              <li><b>✕</b> Needs a smartphone or scanner to read</li>
+              <li><b>✕</b> Often needs internet to open links</li>
+              <li><b>✕</b> You can't tell where it leads just by looking</li>
+              <li><b>✕</b> Scammers can make fake QR codes</li>
+              <li><b>✕</b> Won't scan if printed too small or blurry</li>
+            </ul>
           </div>
         </div>
-        <button id="checkQuiz">Check Answers</button>
-        <button id="resetQuiz" class="secondary">Try Again</button>
-        <div id="quizResult"></div>
+      </div>
+    </section>
+
+    <!-- ================= SAFETY ================= -->
+    <section class="block" id="safety">
+      <div class="container">
+        <div class="safety reveal">
+          <div class="safety-inner">
+            <div>
+              <span class="eyebrow" style="background:rgba(255,255,255,.1); color:#f0abfc">Stay Safe</span>
+              <h2>Watch Out for <span class="grad-text">"Quishing"</span></h2>
+              <p class="lead">Quishing (QR + phishing) is when scammers use fake QR codes to steal information.
+              Here's how to protect yourself.</p>
+            </div>
+            <div class="tips">
+              <div class="tip"><div class="em">🔍</div><div><strong>Check the link first</strong><span>Read the web address your phone shows before you open it.</span></div></div>
+              <div class="tip"><div class="em">🏷️</div><div><strong>Look for stickers</strong><span>Scammers stick fake codes on top of real ones in public places.</span></div></div>
+              <div class="tip"><div class="em">🔐</div><div><strong>Guard your details</strong><span>Never type passwords or bank details on a site from an unknown code.</span></div></div>
+              <div class="tip"><div class="em">👨‍👩‍👧</div><div><strong>Ask an adult</strong><span>If you're not sure a QR code is safe, ask before scanning.</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GENERATOR ================= -->
+    <section class="block" id="generator">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Try it Yourself</span>
+          <h2>Make Your Own <span class="grad-text">QR Code</span></h2>
+          <p>Type anything, pick a colour, and scan the result with your phone.</p>
+        </div>
+
+        <div class="card gen reveal">
+          <div class="gen-form">
+            <label class="field" for="qrText">Text or website link</label>
+            <input class="input" type="text" id="qrText" value="Hello from Haiqa, Jannat & Zainab!">
+            <div class="presets">
+              <button class="preset" data-text="Hello from Haiqa, Jannat & Zainab!">👋 Hello</button>
+              <button class="preset" data-text="https://haiqa-tariq-qr-codes.vercel.app">🌐 Our website</button>
+              <button class="preset" data-text="QR stands for Quick Response!">💡 Fun fact</button>
+            </div>
+
+            <label class="field">Colour</label>
+            <div class="colors" id="colors">
+              <button class="color active" data-color="#0b1026" style="background:#0b1026" aria-label="Black"></button>
+              <button class="color" data-color="#7c3aed" style="background:#7c3aed" aria-label="Purple"></button>
+              <button class="color" data-color="#db2777" style="background:#db2777" aria-label="Pink"></button>
+              <button class="color" data-color="#0891b2" style="background:#0891b2" aria-label="Cyan"></button>
+              <button class="color" data-color="#059669" style="background:#059669" aria-label="Green"></button>
+              <button class="color" data-color="#c2410c" style="background:#c2410c" aria-label="Orange"></button>
+            </div>
+
+            <div class="gen-actions">
+              <button class="btn btn-primary" id="makeBtn">✨ Generate</button>
+              <button class="btn btn-light" id="downloadBtn">⬇ Download</button>
+            </div>
+          </div>
+          <div class="gen-preview">
+            <div class="qr-frame"><div id="qrOutput"></div></div>
+            <small>Point your phone camera at the code to test it.</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUIZ ================= -->
+    <section class="block" id="quiz">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Quiz Time</span>
+          <h2>How Much Did <span class="grad-text">You Learn?</span></h2>
+          <p>Five quick questions. Let's see if you're a QR expert!</p>
+        </div>
+        <div class="card quiz reveal" id="quizBox"></div>
+      </div>
+    </section>
+
+    <!-- ================= TEAM ================= -->
+    <section class="block" id="team">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Our Team</span>
+          <h2>Meet the <span class="grad-text">Group</span></h2>
+          <p>The students behind this project from Oxbridge Secondary School.</p>
+        </div>
+        <div class="team-grid">
+          <div class="member m1 reveal">
+            <div class="avatar g1">HT</div>
+            <h3>Haiqa Tariq</h3>
+            <p>Group Member</p>
+            <span class="school-tag">Oxbridge Secondary School</span>
+          </div>
+          <div class="member m2 reveal">
+            <div class="avatar g2">J</div>
+            <h3>Jannat</h3>
+            <p>Group Member</p>
+            <span class="school-tag">Oxbridge Secondary School</span>
+          </div>
+          <div class="member m3 reveal">
+            <div class="avatar g3">Z</div>
+            <h3>Zainab</h3>
+            <p>Group Member</p>
+            <span class="school-tag">Oxbridge Secondary School</span>
+          </div>
+        </div>
       </div>
     </section>
 
   </main>
 
+  <!-- ================= FOOTER ================= -->
   <footer>
-    <p>Made by <strong>Haiqa Tariq</strong> &middot; Oxbridge Secondary School</p>
-    <p>School Project: <strong>QR Codes</strong></p>
+    <div class="container">
+      <div class="foot-grid">
+        <div>
+          <h3>Decoding the QR Code</h3>
+          <p>A school project by <strong>Haiqa Tariq</strong>, <strong>Jannat</strong> &amp; <strong>Zainab</strong></p>
+          <p>Oxbridge Secondary School</p>
+        </div>
+        <div class="foot-qr"><div id="footQr"></div></div>
+      </div>
+      <div class="foot-bottom">Made with 💜 for our school project on QR Codes</div>
+    </div>
   </footer>
 
   <!-- QR code library (needs internet) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    // ----- QR Generator -----
-    const output = document.getElementById("qrOutput");
-    const hint = document.getElementById("qrHint");
+    const SITE_URL = "https://haiqa-tariq-qr-codes.vercel.app";
+    const hasQR = typeof QRCode !== "undefined";
 
-    function makeQR() {
-      const text = document.getElementById("qrText").value.trim();
-      output.innerHTML = "";
-      if (typeof QRCode === "undefined") {
-        output.textContent = "Please connect to the internet to use the QR code maker.";
+    function drawQR(el, text, size, color) {
+      el.innerHTML = "";
+      if (!hasQR) {
+        el.textContent = "Connect to the internet to see the QR code.";
         return;
       }
-      if (!text) {
-        output.textContent = "Please type something first!";
-        return;
-      }
-      new QRCode(output, {
+      new QRCode(el, {
         text: text,
-        width: 220,
-        height: 220,
-        colorDark: document.getElementById("qrColor").value,
+        width: size,
+        height: size,
+        colorDark: color || "#0b1026",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H
       });
-      hint.textContent = "Tip: Open your phone camera and point it at the code.";
     }
 
-    function downloadQR() {
+    // ----- Nav background on scroll -----
+    const nav = document.getElementById("nav");
+    const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    // ----- Floating squares in hero -----
+    const floaters = document.getElementById("floaters");
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement("div");
+      s.className = "floating-sq";
+      const size = 12 + Math.random() * 30;
+      s.style.width = s.style.height = size + "px";
+      s.style.left = Math.random() * 100 + "%";
+      s.style.top = 100 + Math.random() * 40 + "%";
+      s.style.animationDuration = 14 + Math.random() * 16 + "s";
+      s.style.animationDelay = -Math.random() * 20 + "s";
+      floaters.appendChild(s);
+    }
+
+    // ----- Hero & footer QR codes link to this website -----
+    drawQR(document.getElementById("heroQr"), SITE_URL, 212);
+    drawQR(document.getElementById("footQr"), SITE_URL, 110);
+
+    // ----- Simple seeded random so diagrams look the same every time -----
+    function seeded(seed) {
+      return () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    }
+
+    // ----- Barcode illustration -----
+    const barcode = document.getElementById("barcode");
+    const rb = seeded(7);
+    for (let i = 0; i < 26; i++) {
+      const bar = document.createElement("i");
+      bar.style.width = (rb() > 0.6 ? 4 : rb() > 0.5 ? 2 : 1) + "px";
+      bar.style.opacity = rb() > 0.25 ? 1 : 0;
+      barcode.appendChild(bar);
+    }
+
+    // ----- Build a QR-style grid as SVG -----
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    function rect(svg, x, y, w, h, cls) {
+      const r = document.createElementNS(SVG_NS, "rect");
+      r.setAttribute("x", x); r.setAttribute("y", y);
+      r.setAttribute("width", w); r.setAttribute("height", h);
+      if (cls) r.setAttribute("class", cls);
+      svg.appendChild(r);
+      return r;
+    }
+
+    function buildGrid(size, withAlign, seed) {
+      const rand = seeded(seed);
+      const cells = [];
+      const finders = [[0, 0], [size - 7, 0], [0, size - 7]];
+      const al = size - 9; // alignment pattern top-left
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          let type = null, dark = false;
+          for (const [fx, fy] of finders) {
+            if (x >= fx - 1 && x <= fx + 7 && y >= fy - 1 && y <= fy + 7) {
+              type = "sep";
+              const dx = x - fx, dy = y - fy;
+              if (dx >= 0 && dx < 7 && dy >= 0 && dy < 7) {
+                type = "finder";
+                dark = dx === 0 || dx === 6 || dy === 0 || dy === 6 || (dx >= 2 && dx <= 4 && dy >= 2 && dy <= 4);
+              }
+            }
+          }
+          if (!type && withAlign && x >= al && x < al + 5 && y >= al && y < al + 5) {
+            const dx = x - al, dy = y - al;
+            type = "align";
+            dark = dx === 0 || dx === 4 || dy === 0 || dy === 4 || (dx === 2 && dy === 2);
+          }
+          if (!type && (y === 6 || x === 6)) {
+            type = "timing";
+            dark = (y === 6 ? x : y) % 2 === 0;
+          }
+          if (!type) {
+            type = "data";
+            dark = rand() > 0.5;
+            if (dark && rand() > 0.55) type = "data ecc";
+          }
+          if (dark) cells.push({ x, y, type });
+        }
+      }
+      return cells;
+    }
+
+    // mini QR in "What is it" section
+    const miniQr = document.getElementById("miniQr");
+    buildGrid(21, false, 42).forEach(c => rect(miniQr, c.x, c.y, 1.02, 1.02).setAttribute("fill", "#0b1026"));
+
+    // anatomy diagram
+    const svg = document.getElementById("anatomySvg");
+    rect(svg, -2, -2, 29, 29, "quiet");
+    rect(svg, 0, 0, 25, 25).setAttribute("fill", "#fff");
+    buildGrid(25, true, 2024).forEach(c => rect(svg, c.x, c.y, 1.02, 1.02, "m " + c.type));
+
+    let locked = null;
+    const parts = document.querySelectorAll(".part");
+    function highlight(part) {
+      if (part) svg.dataset.hl = part; else delete svg.dataset.hl;
+      parts.forEach(p => p.classList.toggle("active", p.dataset.part === part));
+    }
+    parts.forEach(p => {
+      p.addEventListener("mouseenter", () => highlight(p.dataset.part));
+      p.addEventListener("mouseleave", () => highlight(locked));
+      p.addEventListener("focus", () => highlight(p.dataset.part));
+      p.addEventListener("click", () => {
+        locked = locked === p.dataset.part ? null : p.dataset.part;
+        highlight(locked);
+      });
+    });
+
+    // ----- Reveal on scroll + counters + ECC bars -----
+    function animateCount(el) {
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || "";
+      const start = target > 1000 && target < 2100 ? 1900 : 0;
+      const t0 = performance.now();
+      const dur = 1400;
+      function step(t) {
+        const p = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(start + (target - start) * eased);
+        el.textContent = (target === 1994 ? val : val.toLocaleString()) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        e.target.querySelectorAll("[data-count]").forEach(animateCount);
+        if (e.target.id === "eccCard") {
+          e.target.querySelectorAll(".ecc-fill").forEach(f => f.style.width = (f.dataset.w / 30 * 100) + "%");
+        }
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+    // ----- Generator -----
+    const output = document.getElementById("qrOutput");
+    const textInput = document.getElementById("qrText");
+    let qrColor = "#0b1026";
+
+    function makeQR() {
+      const text = textInput.value.trim();
+      if (!text) { output.innerHTML = ""; output.textContent = "Type something first!"; return; }
+      drawQR(output, text, 220, qrColor);
+    }
+
+    document.querySelectorAll(".color").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".color").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        qrColor = btn.dataset.color;
+        makeQR();
+      });
+    });
+    document.querySelectorAll(".preset").forEach(btn => {
+      btn.addEventListener("click", () => { textInput.value = btn.dataset.text; makeQR(); });
+    });
+    document.getElementById("makeBtn").addEventListener("click", makeQR);
+    textInput.addEventListener("keydown", e => { if (e.key === "Enter") makeQR(); });
+    document.getElementById("downloadBtn").addEventListener("click", () => {
       const canvas = output.querySelector("canvas");
       if (!canvas) { makeQR(); return; }
       const link = document.createElement("a");
       link.download = "my-qr-code.png";
       link.href = canvas.toDataURL("image/png");
       link.click();
-    }
-
-    document.getElementById("makeBtn").addEventListener("click", makeQR);
-    document.getElementById("downloadBtn").addEventListener("click", downloadQR);
-    document.getElementById("qrText").addEventListener("keydown", e => {
-      if (e.key === "Enter") makeQR();
     });
-    window.addEventListener("load", makeQR);
+    makeQR();
 
     // ----- Quiz -----
-    const questions = document.querySelectorAll(".question");
-    const result = document.getElementById("quizResult");
+    const quiz = [
+      { q: 'What does "QR" stand for?', options: ["Quick Read", "Quick Response", "Quality Record"], answer: 1 },
+      { q: "In which country was the QR code invented?", options: ["USA", "China", "Japan"], answer: 2 },
+      { q: "What was the QR code first used for?", options: ["Tracking car parts", "Paying in shops", "Restaurant menus"], answer: 0 },
+      { q: 'How many big "finder" squares does a QR code have?', options: ["2", "3", "4"], answer: 1 },
+      { q: "With High (H) error correction, how much of a QR code can be damaged and still work?", options: ["About 7%", "About 15%", "About 30%"], answer: 2 }
+    ];
+    const quizBox = document.getElementById("quizBox");
+    let qi = 0, score = 0;
 
-    document.getElementById("checkQuiz").addEventListener("click", () => {
-      let score = 0;
-      questions.forEach(q => {
-        const answer = q.dataset.answer;
-        q.querySelectorAll("label").forEach(label => {
-          label.classList.remove("correct", "wrong");
-          const input = label.querySelector("input");
-          if (input.value === answer) label.classList.add("correct");
-          else if (input.checked) label.classList.add("wrong");
-        });
-        const chosen = q.querySelector("input:checked");
-        if (chosen && chosen.value === answer) score++;
-      });
-      const messages = ["Keep learning!", "Keep learning!", "Good try!", "Nice work!", "Great job!", "Perfect score! You're a QR expert!"];
-      result.textContent = `You scored ${score} out of ${questions.length}. ${messages[score]}`;
-    });
+    function renderQuestion() {
+      const item = quiz[qi];
+      quizBox.innerHTML = `
+        <div class="quiz-top"><span>Question ${qi + 1} of ${quiz.length}</span><span>Score: ${score}</span></div>
+        <div class="progress"><div style="width:${(qi / quiz.length) * 100}%"></div></div>
+        <div class="q-text">${item.q}</div>
+        <div class="options">
+          ${item.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="letter">${"ABC"[i]}</span>${o}</button>`).join("")}
+        </div>
+        <div class="quiz-foot"><span class="feedback"></span></div>`;
+      quizBox.querySelectorAll(".opt").forEach(btn => btn.addEventListener("click", () => choose(+btn.dataset.i)));
+    }
 
-    document.getElementById("resetQuiz").addEventListener("click", () => {
-      document.querySelectorAll("#quizBox input").forEach(i => i.checked = false);
-      document.querySelectorAll("#quizBox label").forEach(l => l.classList.remove("correct", "wrong"));
-      result.textContent = "";
-    });
+    function choose(i) {
+      const item = quiz[qi];
+      const btns = quizBox.querySelectorAll(".opt");
+      btns.forEach(b => b.disabled = true);
+      btns[item.answer].classList.add("correct");
+      const fb = quizBox.querySelector(".feedback");
+      if (i === item.answer) {
+        score++;
+        fb.textContent = "🎉 Correct!";
+        fb.style.color = "var(--green)";
+      } else {
+        btns[i].classList.add("wrong");
+        fb.textContent = "Not quite — the right answer is highlighted.";
+        fb.style.color = "#e11d48";
+      }
+      quizBox.querySelector(".quiz-top span:last-child").textContent = "Score: " + score;
+      quizBox.querySelector(".progress div").style.width = ((qi + 1) / quiz.length) * 100 + "%";
+      const next = document.createElement("button");
+      next.className = "btn btn-dark";
+      next.textContent = qi < quiz.length - 1 ? "Next Question →" : "See My Score →";
+      next.addEventListener("click", () => { qi++; qi < quiz.length ? renderQuestion() : renderResult(); });
+      quizBox.querySelector(".quiz-foot").appendChild(next);
+    }
+
+    function renderResult() {
+      const msgs = ["Keep learning — try again!", "Keep learning — try again!", "Good try!", "Nice work!", "Great job!", "Perfect score! You're a QR expert! 🏆"];
+      quizBox.innerHTML = `
+        <div class="result">
+          <div class="big grad-text">${score}/${quiz.length}</div>
+          <p>${msgs[score]}</p>
+          <button class="btn btn-primary" id="retry">Try Again</button>
+        </div>`;
+      document.getElementById("retry").addEventListener("click", () => { qi = 0; score = 0; renderQuestion(); });
+    }
+    renderQuestion();
   </script>
 </body>
 </html>
