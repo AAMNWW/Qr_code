@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decoding QR Codes | Oxbridge Secondary School</title>
-  <meta name="description" content="A school project on QR codes by Haiqa Tariq, Jannat and Zainab of Oxbridge Secondary School.">
+  <title>QR Code Attendance System | Oxbridge Secondary School</title>
+  <meta name="description" content="A school project on QR code based attendance systems by Haiqa Tariq, Jannat and Zainab of Oxbridge Secondary School.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -22,8 +22,8 @@
       --pink: #ec4899;
       --amber: #f59e0b;
       --green: #10b981;
+      --red: #e11d48;
       --grad: linear-gradient(135deg, var(--violet), var(--pink) 55%, var(--amber));
-      --grad-cool: linear-gradient(135deg, var(--cyan), var(--violet));
       --radius: 20px;
       --shadow: 0 10px 30px rgba(31, 37, 68, 0.08);
       --shadow-lg: 0 20px 50px rgba(31, 37, 68, 0.16);
@@ -39,7 +39,8 @@
       overflow-x: hidden;
     }
     h1, h2, h3, .num { font-family: "Space Grotesk", "Poppins", sans-serif; }
-    img, svg, canvas { display: block; }
+    img, svg, canvas, video { display: block; }
+    button { font-family: inherit; }
 
     .container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
     .grad-text {
@@ -57,79 +58,39 @@
       transition: background .3s, box-shadow .3s;
     }
     nav.scrolled {
-      background: rgba(11, 16, 38, 0.85);
+      background: rgba(11, 16, 38, 0.88);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 4px 20px rgba(0,0,0,.25);
     }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      height: 68px;
-    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #fff;
-      font-weight: 700;
-      text-decoration: none;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.15rem;
-      white-space: nowrap;
+      display: flex; align-items: center; gap: 10px;
+      color: #fff; font-weight: 700; text-decoration: none;
+      font-family: "Space Grotesk", sans-serif; font-size: 1.15rem; white-space: nowrap;
     }
     .logo-mark {
-      width: 32px; height: 32px;
-      border-radius: 9px;
-      background: var(--grad);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3px;
-      padding: 6px;
+      width: 32px; height: 32px; border-radius: 9px; background: var(--grad);
+      display: grid; place-items: center; font-size: 1rem;
     }
-    .logo-mark span { background: #fff; border-radius: 2px; }
-    .logo-mark span:nth-child(2), .logo-mark span:nth-child(4),
-    .logo-mark span:nth-child(6), .logo-mark span:nth-child(8) { background: transparent; }
-    .nav-links {
-      display: flex;
-      gap: 4px;
-      list-style: none;
-      min-width: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
+    .nav-links { display: flex; gap: 4px; list-style: none; min-width: 0; overflow-x: auto; scrollbar-width: none; }
     .nav-links::-webkit-scrollbar { display: none; }
     .nav-links a {
-      display: block;
-      padding: 8px 14px;
-      color: rgba(255,255,255,.85);
-      text-decoration: none;
-      font-size: .9rem;
-      font-weight: 500;
-      border-radius: 999px;
-      white-space: nowrap;
+      display: block; padding: 8px 14px;
+      color: rgba(255,255,255,.85); text-decoration: none;
+      font-size: .9rem; font-weight: 500; border-radius: 999px; white-space: nowrap;
       transition: background .2s, color .2s;
     }
     .nav-links a:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .nav-links a.cta { background: var(--grad); color: #fff; }
 
     /* ================= HERO ================= */
     .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      background: var(--ink);
-      color: #fff;
-      overflow: hidden;
-      padding: 110px 0 80px;
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      background: var(--ink); color: #fff; overflow: hidden; padding: 110px 0 90px;
     }
     .hero::before {
-      /* subtle module grid */
-      content: "";
-      position: absolute;
-      inset: 0;
+      content: ""; position: absolute; inset: 0;
       background-image:
         linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
@@ -137,577 +98,416 @@
       mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
       -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
     }
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: .55;
-      animation: float 14s ease-in-out infinite;
-    }
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; animation: float 14s ease-in-out infinite; }
     .blob.b1 { width: 420px; height: 420px; background: var(--violet); top: -120px; left: -100px; }
     .blob.b2 { width: 360px; height: 360px; background: var(--pink); bottom: -140px; right: 10%; animation-delay: -5s; }
     .blob.b3 { width: 300px; height: 300px; background: var(--cyan); top: 30%; right: -80px; animation-delay: -9s; opacity: .4; }
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(40px, -30px) scale(1.1); }
-    }
-    .floating-sq {
-      position: absolute;
-      border: 2px solid rgba(255,255,255,.15);
-      border-radius: 6px;
-      animation: drift 18s linear infinite;
-    }
-    @keyframes drift {
-      from { transform: translateY(0) rotate(0deg); }
-      to { transform: translateY(-110vh) rotate(360deg); }
-    }
-    .hero-grid > *, .what-grid > *, .anatomy > *, .ecc-wrap > *, .safety-inner > *, .gen > * { min-width: 0; }
-    .hero-grid {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 50px;
-      align-items: center;
-    }
+    @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(40px, -30px) scale(1.1); } }
+    .floating-sq { position: absolute; border: 2px solid rgba(255,255,255,.15); border-radius: 6px; animation: drift 18s linear infinite; }
+    @keyframes drift { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-110vh) rotate(360deg); } }
+
+    .hero-grid { position: relative; display: grid; grid-template-columns: 1.1fr .9fr; gap: 50px; align-items: center; }
+    .hero-grid > *, .two > *, .gen > *, .sec-inner > * { min-width: 0; }
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.18);
-      font-size: .85rem;
-      font-weight: 500;
-      margin-bottom: 22px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 999px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+      font-size: .85rem; font-weight: 500; margin-bottom: 22px;
     }
     .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
-    .hero h1 {
-      font-size: clamp(2.6rem, 6.5vw, 4.6rem);
-      line-height: 1.05;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
-    }
-    .hero p.lead {
-      font-size: 1.15rem;
-      color: rgba(255,255,255,.78);
-      max-width: 520px;
-      margin-bottom: 30px;
-    }
+    .hero h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.06; margin-bottom: 20px; letter-spacing: -1px; }
+    .hero p.lead { font-size: 1.12rem; color: rgba(255,255,255,.78); max-width: 540px; margin-bottom: 30px; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 36px; }
+
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 26px;
-      border-radius: 999px;
-      font-family: inherit;
-      font-weight: 600;
-      font-size: 1rem;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: transform .2s, box-shadow .2s, background .2s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 24px; border-radius: 999px; font-weight: 600; font-size: .98rem;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s, opacity .2s;
     }
     .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: .5; cursor: default; transform: none; }
     .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 10px 30px rgba(236,72,153,.35); }
-    .btn-primary:hover { box-shadow: 0 14px 36px rgba(236,72,153,.5); }
     .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.25); }
-    .btn-ghost:hover { background: rgba(255,255,255,.16); }
     .btn-dark { background: var(--ink); color: #fff; }
-    .btn-dark:hover { box-shadow: var(--shadow-lg); }
     .btn-light { background: #fff; color: var(--text); border: 2px solid var(--border); }
+    .btn-danger { background: #fff; color: var(--red); border: 2px solid #fecdd3; }
+    .btn-sm { padding: 8px 16px; font-size: .88rem; }
 
-    .hero-team {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: .92rem;
-      color: rgba(255,255,255,.8);
-    }
+    .hero-team { display: flex; align-items: center; gap: 14px; font-size: .92rem; color: rgba(255,255,255,.8); }
     .avatars { display: flex; }
     .avatars span {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      color: #fff;
-      border: 3px solid var(--ink);
-      margin-left: -10px;
-      font-size: .95rem;
+      width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+      font-weight: 700; color: #fff; border: 3px solid var(--ink); margin-left: -10px; font-size: .95rem;
     }
     .avatars span:first-child { margin-left: 0; }
     .hero-team strong { color: #fff; }
 
-    /* Hero scanner card */
-    .scanner-wrap { display: flex; justify-content: center; }
-    .scanner {
-      position: relative;
-      padding: 26px;
-      border-radius: 28px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 30px 80px rgba(0,0,0,.4);
-      animation: bob 6s ease-in-out infinite;
+    /* Hero ID card being scanned */
+    .hero-visual { position: relative; display: flex; justify-content: center; padding: 20px 0 40px; }
+    .id-card {
+      width: 300px; background: #fff; color: var(--text); border-radius: 22px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45); animation: bob 6s ease-in-out infinite;
     }
-    @keyframes bob {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-14px) rotate(2deg); }
+    @keyframes bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(1deg); } }
+    .id-top { background: var(--grad); color: #fff; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .id-top b { font-family: "Space Grotesk", sans-serif; font-size: .95rem; line-height: 1.2; }
+    .id-top small { font-size: .7rem; opacity: .9; display: block; font-weight: 500; }
+    .id-top .chip { width: 34px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #fde68a, #f59e0b); }
+    .id-body { padding: 18px 20px 20px; display: flex; gap: 16px; align-items: center; }
+    .id-photo {
+      width: 74px; height: 74px; border-radius: 16px; flex-shrink: 0;
+      display: grid; place-items: center; font-weight: 700; font-size: 1.6rem; color: #fff;
+      font-family: "Space Grotesk", sans-serif;
     }
-    .scan-box {
-      position: relative;
-      width: 240px; height: 240px;
-      background: #fff;
-      border-radius: 16px;
-      padding: 14px;
-      overflow: hidden;
-    }
-    #heroQr { width: 100%; height: 100%; }
-    #heroQr img, #heroQr canvas { width: 100% !important; height: 100% !important; }
+    .id-info h3 { font-size: 1.1rem; color: var(--ink); line-height: 1.2; }
+    .id-info p { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+    .id-qr-row { position: relative; margin: 0 20px 20px; padding: 14px; border: 2px dashed var(--border); border-radius: 16px; display: flex; justify-content: center; overflow: hidden; }
+    #heroQr { width: 150px; height: 150px; }
+    #heroQr img, #heroQr canvas { width: 150px !important; height: 150px !important; }
     .scan-line {
-      position: absolute;
-      left: 0; right: 0;
-      height: 3px;
-      background: var(--pink);
-      box-shadow: 0 0 18px 4px rgba(236,72,153,.7);
-      animation: scan 2.6s ease-in-out infinite;
+      position: absolute; left: 0; right: 0; height: 3px; background: var(--pink);
+      box-shadow: 0 0 18px 4px rgba(236,72,153,.7); animation: scan 2.6s ease-in-out infinite;
     }
-    @keyframes scan {
-      0%, 100% { top: 6%; }
-      50% { top: 92%; }
+    @keyframes scan { 0%, 100% { top: 6%; } 50% { top: 92%; } }
+    .toast-present {
+      position: absolute; right: 0; bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 18px; border-radius: 16px; background: #fff; color: var(--ink);
+      box-shadow: 0 20px 40px rgba(0,0,0,.35); font-size: .88rem; font-weight: 600;
+      animation: toast 5.2s ease-in-out infinite;
     }
-    .corner {
-      position: absolute;
-      width: 34px; height: 34px;
-      border: 4px solid var(--cyan);
-    }
-    .corner.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; border-radius: 12px 0 0 0; }
-    .corner.tr { top: 12px; right: 12px; border-left: none; border-bottom: none; border-radius: 0 12px 0 0; }
-    .corner.bl { bottom: 12px; left: 12px; border-right: none; border-top: none; border-radius: 0 0 0 12px; }
-    .corner.br { bottom: 12px; right: 12px; border-left: none; border-top: none; border-radius: 0 0 12px 0; }
-    .scanner-caption {
-      text-align: center;
-      margin-top: 16px;
-      font-size: .85rem;
-      color: rgba(255,255,255,.75);
+    .toast-present .tick { width: 30px; height: 30px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; font-weight: 800; }
+    .toast-present small { display: block; color: var(--muted); font-weight: 500; font-size: .75rem; }
+    @keyframes toast {
+      0%, 40% { opacity: 0; transform: translateY(14px) scale(.95); }
+      50%, 90% { opacity: 1; transform: none; }
+      100% { opacity: 0; transform: translateY(-6px); }
     }
 
     .scroll-hint {
-      position: absolute;
-      bottom: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 26px; height: 42px;
-      border: 2px solid rgba(255,255,255,.4);
-      border-radius: 14px;
+      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+      width: 26px; height: 42px; border: 2px solid rgba(255,255,255,.4); border-radius: 14px;
     }
     .scroll-hint::after {
-      content: "";
-      position: absolute;
-      top: 8px; left: 50%;
-      width: 4px; height: 8px;
-      margin-left: -2px;
-      border-radius: 2px;
-      background: #fff;
-      animation: wheel 1.8s infinite;
+      content: ""; position: absolute; top: 8px; left: 50%; width: 4px; height: 8px; margin-left: -2px;
+      border-radius: 2px; background: #fff; animation: wheel 1.8s infinite;
     }
     @keyframes wheel { to { transform: translateY(14px); opacity: 0; } }
 
     /* ================= STATS ================= */
-    .stats {
-      position: relative;
-      z-index: 2;
-      margin-top: -50px;
-    }
+    .stats { position: relative; z-index: 2; margin-top: -50px; }
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-lg); overflow: hidden;
     }
-    .stat { padding: 28px 20px; text-align: center; border-right: 1px solid var(--border); }
+    .stat { padding: 26px 18px; text-align: center; border-right: 1px solid var(--border); }
     .stat:last-child { border-right: none; }
-    .stat .num { font-size: 2.3rem; font-weight: 700; line-height: 1.1; }
-    .stat p { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+    .stat .num { font-size: 2.1rem; font-weight: 700; line-height: 1.1; }
+    .stat p { color: var(--muted); font-size: .88rem; margin-top: 4px; }
 
     /* ================= SECTIONS ================= */
     section.block { padding: 100px 0 20px; }
-    .section-head { text-align: center; max-width: 680px; margin: 0 auto 50px; }
+    .section-head { text-align: center; max-width: 700px; margin: 0 auto 50px; }
     .eyebrow {
-      display: inline-block;
-      font-size: .8rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--violet);
-      background: rgba(124,58,237,.1);
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 14px;
+      display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--violet); background: rgba(124,58,237,.1); padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
     }
-    .section-head h2 { font-size: clamp(2rem, 4.5vw, 2.9rem); line-height: 1.15; margin-bottom: 14px; color: var(--ink); }
+    .section-head h2 { font-size: clamp(2rem, 4.5vw, 2.8rem); line-height: 1.15; margin-bottom: 14px; color: var(--ink); }
     .section-head p { color: var(--muted); font-size: 1.05rem; }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
-      box-shadow: var(--shadow);
-    }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
+    .card p + p { margin-top: 12px; }
 
-    /* What is it */
-    .what-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
-    .what-grid p { margin-bottom: 14px; }
-    .compare { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
-    .compare-item { display: flex; align-items: center; gap: 20px; }
-    .compare-item .label { font-weight: 600; margin-bottom: 2px; color: var(--ink); }
-    .compare-item small { color: var(--muted); }
-    .barcode { display: flex; gap: 2px; height: 64px; flex-shrink: 0; width: 96px; align-items: stretch; }
-    .barcode i { background: var(--ink); }
-    .mini-qr { width: 96px; height: 96px; flex-shrink: 0; }
-    .vs {
-      align-self: center;
-      font-weight: 800;
-      color: var(--pink);
-      font-family: "Space Grotesk", sans-serif;
+    /* Problem cards */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .tile {
+      position: relative; padding: 26px 22px; border-radius: var(--radius); background: var(--card);
+      border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; transition: transform .3s, box-shadow .3s;
     }
+    .tile::after {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 4px; background: var(--grad);
+      transform: scaleX(0); transform-origin: left; transition: transform .35s;
+    }
+    .tile:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .tile:hover::after { transform: scaleX(1); }
+    .tile-icon { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; font-size: 1.7rem; margin-bottom: 16px; }
+    .tile h3 { font-size: 1.1rem; color: var(--ink); margin-bottom: 4px; }
+    .tile p { font-size: .9rem; color: var(--muted); }
+
     .fact {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      background: linear-gradient(135deg, #fff7e6, #fdecf5);
-      border: 1px solid #fbd7a8;
-      border-radius: 16px;
-      padding: 18px 22px;
-      margin-top: 30px;
+      display: flex; gap: 16px; align-items: flex-start;
+      background: linear-gradient(135deg, #fff7e6, #fdecf5); border: 1px solid #fbd7a8;
+      border-radius: 16px; padding: 18px 22px; margin-top: 30px;
     }
     .fact .em { font-size: 1.8rem; line-height: 1; }
 
-    /* Timeline */
-    .timeline { position: relative; max-width: 900px; margin: 0 auto; }
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 0; bottom: 0;
-      width: 4px;
-      margin-left: -2px;
-      background: var(--grad);
-      border-radius: 4px;
+    /* What is it */
+    .what-visual {
+      display: flex; flex-direction: column; justify-content: center; gap: 18px;
+      background: linear-gradient(135deg, #f3e8ff, #fce7f3 50%, #e0f2fe);
     }
-    .t-item { position: relative; width: 50%; padding: 0 40px 40px; }
-    .t-item:nth-child(odd) { left: 0; text-align: right; }
-    .t-item:nth-child(even) { left: 50%; }
-    .t-item::before {
-      content: "";
-      position: absolute;
-      top: 24px;
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      border: 5px solid var(--pink);
-      box-shadow: 0 0 0 6px rgba(236,72,153,.15);
+    .mini-flow { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .mini-flow .node {
+      background: #fff; border-radius: 16px; padding: 14px 16px; text-align: center; box-shadow: var(--shadow);
+      font-size: .82rem; font-weight: 600; color: var(--ink); width: 110px;
     }
-    .t-item:nth-child(odd)::before { right: -10px; }
-    .t-item:nth-child(even)::before { left: -10px; }
-    .t-item .card { padding: 22px 24px; transition: transform .25s, box-shadow .25s; }
-    .t-item .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .t-year {
-      display: inline-block;
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 4px;
+    .mini-flow .node span { display: block; font-size: 1.7rem; margin-bottom: 2px; }
+    .mini-flow .arr { font-size: 1.3rem; color: var(--violet); font-weight: 700; }
+    .what-visual p { text-align: center; color: var(--muted); font-size: .9rem; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; position: relative; }
+    .steps::before {
+      content: ""; position: absolute; top: 34px; left: 12%; right: 12%; height: 4px;
+      background: var(--grad); border-radius: 4px; opacity: .35;
+    }
+    .step { position: relative; text-align: center; padding: 0 6px; }
+    .step-num {
+      width: 68px; height: 68px; margin: 0 auto 18px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 1.8rem; background: #fff;
+      box-shadow: 0 0 0 6px var(--bg), var(--shadow-lg); position: relative;
+    }
+    .step-num b {
+      position: absolute; top: -4px; right: -4px; width: 26px; height: 26px; border-radius: 50%;
+      background: var(--grad); color: #fff; font-size: .8rem; display: grid; place-items: center;
+    }
+    .step h3 { font-size: 1.1rem; color: var(--ink); margin-bottom: 6px; }
+    .step p { font-size: .9rem; color: var(--muted); }
+
+    .methods { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 60px; }
+    .method { padding: 30px; border-radius: var(--radius); color: #fff; position: relative; overflow: hidden; }
+    .method.m-a { background: linear-gradient(135deg, #4c1d95, #7c3aed); }
+    .method.m-b { background: linear-gradient(135deg, #0e7490, #06b6d4); }
+    .method::before { content: ""; position: absolute; width: 200px; height: 200px; right: -60px; top: -60px; border-radius: 50%; background: rgba(255,255,255,.1); }
+    .method .tag { display: inline-block; font-size: .75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; background: rgba(255,255,255,.18); padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+    .method h3 { font-size: 1.4rem; margin-bottom: 8px; position: relative; }
+    .method p { color: rgba(255,255,255,.85); font-size: .95rem; position: relative; }
+    .method ul { list-style: none; margin-top: 14px; position: relative; }
+    .method li { padding: 5px 0 5px 26px; position: relative; font-size: .92rem; }
+    .method li::before { content: "→"; position: absolute; left: 0; font-weight: 700; }
+
+    /* Flowchart */
+    .flow { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+    .f-step {
+      width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 22px;
+      background: var(--card); border: 2px solid var(--border); border-radius: 18px; box-shadow: var(--shadow);
+    }
+    .f-step .f-ic { font-size: 1.6rem; width: 48px; height: 48px; flex-shrink: 0; border-radius: 14px; display: grid; place-items: center; background: #f1f2f9; }
+    .f-step b { color: var(--ink); display: block; }
+    .f-step small { color: var(--muted); font-size: .85rem; }
+    .f-step.decision { border-color: #c4b5fd; background: #faf7ff; }
+    .f-step.decision .f-ic { background: #ede9fe; }
+    .f-step.done { border-color: #6ee7b7; background: #ecfdf5; }
+    .f-step.done .f-ic { background: #d1fae5; }
+    .branch {
+      display: inline-block; margin-top: 6px; padding: 3px 12px; border-radius: 999px;
+      background: #fff1f2; color: var(--red); font-size: .8rem; font-weight: 600; border: 1px solid #fecdd3;
+    }
+    .f-arrow { position: relative; width: 4px; height: 38px; background: #c9cbe0; }
+    .f-arrow::after {
+      content: ""; position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+      border: 8px solid transparent; border-top: 10px solid #c9cbe0; border-bottom: 0;
+    }
+    .f-arrow span {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: .75rem; font-weight: 700; color: var(--green); white-space: nowrap;
     }
 
-    /* Anatomy */
-    .anatomy { display: grid; grid-template-columns: 420px 1fr; gap: 40px; align-items: center; }
-    .diagram-card { padding: 30px; position: sticky; top: 90px; }
-    #anatomySvg { width: 100%; height: auto; }
-    #anatomySvg .m { fill: var(--ink); transition: fill .3s, opacity .3s; }
-    #anatomySvg .quiet { fill: transparent; stroke: #c9cbe0; stroke-dasharray: .4 .3; stroke-width: .12; transition: fill .3s; }
-    #anatomySvg[data-hl] .m { opacity: .12; }
-    #anatomySvg[data-hl="finder"] .finder { opacity: 1; fill: var(--pink); }
-    #anatomySvg[data-hl="align"]  .align  { opacity: 1; fill: var(--violet); }
-    #anatomySvg[data-hl="timing"] .timing { opacity: 1; fill: var(--cyan); }
-    #anatomySvg[data-hl="data"]   .data   { opacity: 1; fill: var(--green); }
-    #anatomySvg[data-hl="ecc"]    .ecc    { opacity: 1; fill: var(--amber); }
-    #anatomySvg[data-hl="quiet"]  .quiet  { fill: rgba(6,182,212,.25); stroke: var(--cyan); }
-    .diagram-hint { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 14px; }
+    /* Components */
+    .comp { padding: 30px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .comp h3 { display: flex; align-items: center; gap: 12px; color: var(--ink); font-size: 1.25rem; margin-bottom: 14px; }
+    .comp h3 span { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; }
+    .comp ul { list-style: none; }
+    .comp li { padding: 9px 0; border-bottom: 1px dashed var(--border); font-size: .93rem; display: flex; gap: 10px; }
+    .comp li:last-child { border-bottom: none; }
+    .comp li b { color: var(--ink); }
 
-    .parts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .part {
-      cursor: pointer;
-      padding: 20px;
-      border-radius: 16px;
-      background: var(--card);
-      border: 2px solid var(--border);
-      transition: border-color .25s, transform .25s, box-shadow .25s;
-      outline: none;
+    /* ================= DEMO ================= */
+    .demo { padding: 0; overflow: hidden; }
+    .tabs { display: flex; background: #f1f2f9; padding: 8px; gap: 6px; overflow-x: auto; }
+    .tab {
+      flex: 1; min-width: max-content; padding: 12px 18px; border: none; border-radius: 14px;
+      background: transparent; font-weight: 600; font-size: .95rem; color: var(--muted); cursor: pointer;
+      transition: background .2s, color .2s, box-shadow .2s;
     }
-    .part:hover, .part:focus, .part.active { transform: translateY(-3px); box-shadow: var(--shadow); }
-    .part h3 { display: flex; align-items: center; gap: 10px; font-size: 1.08rem; color: var(--ink); margin-bottom: 4px; }
-    .part p { font-size: .92rem; color: var(--muted); }
-    .swatch { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
-    .part[data-part="finder"]:is(:hover, :focus, .active) { border-color: var(--pink); }
-    .part[data-part="align"]:is(:hover, :focus, .active)  { border-color: var(--violet); }
-    .part[data-part="timing"]:is(:hover, :focus, .active) { border-color: var(--cyan); }
-    .part[data-part="quiet"]:is(:hover, :focus, .active)  { border-color: var(--cyan); }
-    .part[data-part="data"]:is(:hover, :focus, .active)   { border-color: var(--green); }
-    .part[data-part="ecc"]:is(:hover, :focus, .active)    { border-color: var(--amber); }
+    .tab:hover { color: var(--ink); }
+    .tab.active { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
+    .panel { display: none; padding: 32px; }
+    .panel.active { display: block; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+    .panel-head h3 { font-size: 1.4rem; color: var(--ink); line-height: 1.2; }
+    .panel-head p { color: var(--muted); font-size: .92rem; }
 
-    .binary {
-      margin-top: 30px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
+    .add-form { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+    .input {
+      flex: 1; min-width: 200px; padding: 13px 18px; font-size: 1rem; font-family: inherit;
+      border: 2px solid var(--border); border-radius: 14px; transition: border-color .2s, box-shadow .2s;
     }
-    .bits { display: flex; gap: 6px; }
-    .bits span {
-      width: 38px; height: 38px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      font-family: "Space Grotesk", sans-serif;
-      border: 2px solid var(--ink);
-    }
-    .bits span.on { background: var(--ink); color: #fff; }
+    .input:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 4px rgba(124,58,237,.12); }
 
-    /* Error correction */
-    .ecc-wrap { margin-top: 60px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; align-items: center; }
-    .ecc-wrap h3 { font-size: 1.6rem; color: var(--ink); margin-bottom: 10px; }
-    .ecc-row { display: grid; grid-template-columns: 34px 1fr 54px; align-items: center; gap: 14px; margin-bottom: 16px; }
-    .ecc-row:last-child { margin-bottom: 0; }
-    .ecc-level {
-      width: 34px; height: 34px;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      color: #fff;
-      background: var(--ink);
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
+    .s-card { border: 1px solid var(--border); border-radius: 18px; overflow: hidden; background: #fff; box-shadow: var(--shadow); position: relative; }
+    .s-card .id-top { padding: 10px 14px; }
+    .s-card .id-top b { font-size: .8rem; }
+    .s-card .s-body { padding: 14px; text-align: center; }
+    .s-card .s-qr { width: 130px; height: 130px; margin: 0 auto 10px; }
+    .s-card .s-qr img, .s-card .s-qr canvas { width: 130px !important; height: 130px !important; }
+    .s-card h4 { font-family: "Space Grotesk", sans-serif; font-size: 1.05rem; color: var(--ink); line-height: 1.3; }
+    .s-card .s-id { font-size: .8rem; color: var(--muted); }
+    .s-card .s-actions { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+    .s-card .s-actions button {
+      border: 1px solid var(--border); background: #fff; border-radius: 10px; padding: 5px 10px;
+      font-size: .78rem; cursor: pointer; color: var(--text);
     }
-    .ecc-track { height: 14px; background: #eef0f8; border-radius: 999px; overflow: hidden; }
-    .ecc-fill { height: 100%; width: 0; border-radius: 999px; background: var(--grad); transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
-    .ecc-row small { color: var(--muted); display: block; font-size: .8rem; margin-top: 2px; }
-    .ecc-pct { font-weight: 700; font-family: "Space Grotesk", sans-serif; text-align: right; }
+    .s-card .s-actions button:hover { border-color: var(--violet); }
+    .s-card .s-actions button.del:hover { border-color: var(--red); color: var(--red); }
+    .s-card .badge-present {
+      position: absolute; top: 46px; right: 10px; background: var(--green); color: #fff;
+      font-size: .7rem; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+    }
 
-    /* Uses */
-    .uses-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .use {
-      position: relative;
-      padding: 26px 22px;
-      border-radius: var(--radius);
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: transform .3s, box-shadow .3s;
+    .scanner-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 26px; align-items: start; }
+    .scanner-layout > * { min-width: 0; }
+    .cam {
+      position: relative; aspect-ratio: 4 / 3; background: var(--ink); border-radius: 20px; overflow: hidden;
+      display: grid; place-items: center; color: rgba(255,255,255,.7); text-align: center;
     }
-    .use::after {
-      content: "";
-      position: absolute;
-      inset: auto 0 0 0;
-      height: 4px;
-      background: var(--grad);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .35s;
+    .cam video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .cam .cam-msg { position: relative; padding: 24px; font-size: .95rem; }
+    .cam .cam-msg .big { font-size: 3rem; display: block; margin-bottom: 8px; }
+    .cam .frame { position: absolute; inset: 14%; pointer-events: none; display: none; }
+    .cam.on .frame { display: block; }
+    .cam .frame i { position: absolute; width: 40px; height: 40px; border: 4px solid var(--cyan); }
+    .cam .frame i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; border-radius: 12px 0 0 0; }
+    .cam .frame i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; border-radius: 0 12px 0 0; }
+    .cam .frame i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 12px; }
+    .cam .frame i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; border-radius: 0 0 12px 0; }
+    .cam .frame .scan-line { animation-duration: 2s; }
+    .cam-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    .scan-result {
+      display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 16px;
+      border: 2px solid var(--border); background: #fff; margin-bottom: 18px; min-height: 76px;
+      transition: background .3s, border-color .3s;
     }
-    .use:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-    .use:hover::after { transform: scaleX(1); }
-    .use-icon {
-      width: 56px; height: 56px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-size: 1.7rem;
-      margin-bottom: 16px;
+    .scan-result .r-ic { width: 42px; height: 42px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 1.1rem; background: #f1f2f9; }
+    .scan-result b { display: block; color: var(--ink); line-height: 1.3; }
+    .scan-result small { color: var(--muted); }
+    .scan-result.ok { background: #ecfdf5; border-color: #6ee7b7; }
+    .scan-result.ok .r-ic { background: var(--green); color: #fff; }
+    .scan-result.warn { background: #fffbeb; border-color: #fcd34d; }
+    .scan-result.warn .r-ic { background: var(--amber); color: #fff; }
+    .scan-result.error { background: #fff1f2; border-color: #fda4af; }
+    .scan-result.error .r-ic { background: var(--red); color: #fff; }
+    .scan-result.pop { animation: pop .4s; }
+    @keyframes pop { 0% { transform: scale(.96); } 60% { transform: scale(1.02); } 100% { transform: none; } }
+
+    .sim h4 { font-size: .95rem; color: var(--ink); margin-bottom: 4px; }
+    .sim p { font-size: .85rem; color: var(--muted); margin-bottom: 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip-btn {
+      padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: #fff;
+      font-size: .85rem; cursor: pointer; transition: border-color .2s, background .2s;
     }
-    .use h3 { font-size: 1.1rem; color: var(--ink); margin-bottom: 4px; }
-    .use p { font-size: .9rem; color: var(--muted); }
+    .chip-btn:hover { border-color: var(--violet); background: #f5f0ff; }
+    .chip-btn.fake { border-style: dashed; color: var(--red); }
+
+    .reg-top { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; margin-bottom: 24px; }
+    .ring { position: relative; width: 130px; height: 130px; }
+    .ring svg { width: 130px; height: 130px; transform: rotate(-90deg); }
+    .ring circle { fill: none; stroke-width: 12; }
+    .ring .bg { stroke: #eef0f8; }
+    .ring .fg { stroke: url(#ringGrad); stroke-linecap: round; transition: stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1); }
+    .ring .pct { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; line-height: 1.1; }
+    .ring .pct b { font-family: "Space Grotesk", sans-serif; font-size: 1.8rem; color: var(--ink); display: block; }
+    .ring .pct small { font-size: .75rem; color: var(--muted); }
+    .reg-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .reg-stat { padding: 14px; border-radius: 14px; background: #f6f7fc; text-align: center; }
+    .reg-stat b { font-family: "Space Grotesk", sans-serif; font-size: 1.6rem; display: block; line-height: 1.2; }
+    .reg-stat small { color: var(--muted); font-size: .8rem; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; }
+    table { width: 100%; border-collapse: collapse; min-width: 520px; }
+    th, td { padding: 13px 16px; text-align: left; font-size: .92rem; }
+    th { background: var(--ink); color: #fff; font-weight: 600; }
+    tbody tr { border-top: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: #fafafe; }
+    .status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .82rem; padding: 4px 12px; border-radius: 999px; }
+    .status.p { background: #d1fae5; color: #047857; }
+    .status.a { background: #ffe4e6; color: #be123c; }
+    .reg-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .note {
+      margin: 0 32px 32px; padding: 14px 18px; border-radius: 14px; background: #f0f9ff; border: 1px solid #bae6fd;
+      font-size: .88rem; color: #0c4a6e;
+    }
+
+    /* Compare table */
+    .compare-table th:first-child { width: 26%; }
+    .compare-table td:nth-child(2) { color: #9f1239; }
+    .compare-table td:nth-child(3) { color: #047857; font-weight: 500; }
+    .compare-table th:nth-child(2) { background: #9f1239; }
+    .compare-table th:nth-child(3) { background: #047857; }
+    .compare-table td:first-child { font-weight: 600; color: var(--ink); }
 
     /* Pros & cons */
-    .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
     .pc { border-radius: var(--radius); padding: 32px; color: #fff; position: relative; overflow: hidden; }
     .pc.pros { background: linear-gradient(135deg, #059669, #10b981 60%, #34d399); }
     .pc.cons { background: linear-gradient(135deg, #be123c, #e11d48 60%, #fb7185); }
-    .pc::before {
-      content: "";
-      position: absolute;
-      width: 220px; height: 220px;
-      right: -60px; top: -60px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.12);
-    }
+    .pc::before { content: ""; position: absolute; width: 220px; height: 220px; right: -60px; top: -60px; border-radius: 50%; background: rgba(255,255,255,.12); }
     .pc h3 { font-size: 1.5rem; margin-bottom: 18px; position: relative; }
     .pc ul { list-style: none; position: relative; }
-    .pc li {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,.2);
-    }
+    .pc li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.2); }
     .pc li:last-child { border-bottom: none; }
     .pc li b {
-      flex-shrink: 0;
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.22);
-      display: grid;
-      place-items: center;
-      font-size: .8rem;
-      margin-top: 2px;
+      flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,.22);
+      display: grid; place-items: center; font-size: .8rem; margin-top: 2px;
     }
 
-    /* Safety */
-    .safety {
-      background: var(--ink);
-      color: #fff;
-      border-radius: 28px;
-      padding: 56px;
-      position: relative;
-      overflow: hidden;
+    /* Security (dark) */
+    .dark-box { background: var(--ink); color: #fff; border-radius: 28px; padding: 56px; position: relative; overflow: hidden; }
+    .dark-box::before {
+      content: ""; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: var(--violet);
+      filter: blur(100px); opacity: .45; top: -150px; right: -100px;
     }
-    .safety::before {
-      content: "";
-      position: absolute;
-      width: 400px; height: 400px;
-      border-radius: 50%;
-      background: var(--violet);
-      filter: blur(100px);
-      opacity: .45;
-      top: -150px; right: -100px;
-    }
-    .safety-inner { position: relative; display: grid; grid-template-columns: .9fr 1.1fr; gap: 40px; align-items: center; }
-    .safety h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15; margin-bottom: 14px; }
-    .safety p.lead { color: rgba(255,255,255,.75); }
-    .tips { display: grid; gap: 14px; }
+    .sec-inner { position: relative; display: grid; grid-template-columns: .85fr 1.15fr; gap: 40px; align-items: center; }
+    .dark-box h2 { font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1.15; margin-bottom: 14px; }
+    .dark-box p.lead { color: rgba(255,255,255,.75); }
+    .tips { display: grid; gap: 12px; }
     .tip {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      padding: 16px 20px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12);
-      transition: background .25s, transform .25s;
+      display: flex; gap: 16px; align-items: center; padding: 15px 20px; border-radius: 16px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); transition: background .25s, transform .25s;
     }
     .tip:hover { background: rgba(255,255,255,.12); transform: translateX(6px); }
-    .tip .em { font-size: 1.6rem; }
+    .tip .em { font-size: 1.5rem; }
     .tip strong { display: block; }
-    .tip span { color: rgba(255,255,255,.7); font-size: .9rem; }
+    .tip span { color: rgba(255,255,255,.7); font-size: .88rem; }
 
-    /* Generator */
-    .gen {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    .gen-form { padding: 40px; }
-    .gen-preview {
-      background: linear-gradient(135deg, #f3e8ff, #fce7f3 50%, #e0f2fe);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      gap: 18px;
-    }
-    .qr-frame {
-      background: #fff;
-      padding: 18px;
-      border-radius: 22px;
-      box-shadow: var(--shadow-lg);
-    }
-    #qrOutput { width: 220px; height: 220px; display: grid; place-items: center; text-align: center; color: var(--muted); font-size: .9rem; }
-    #qrOutput img, #qrOutput canvas { width: 220px !important; height: 220px !important; }
-    label.field { display: block; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
-    .input {
-      width: 100%;
-      padding: 14px 18px;
-      font-size: 1rem;
-      font-family: inherit;
-      border: 2px solid var(--border);
-      border-radius: 14px;
-      margin-bottom: 22px;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .input:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 4px rgba(124,58,237,.12); }
-    .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 22px; }
-    .preset {
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-family: inherit;
-      font-size: .85rem;
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-    }
-    .preset:hover { border-color: var(--violet); background: #f5f0ff; }
-    .colors { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
-    .color {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 2px var(--border);
-      cursor: pointer;
-      transition: transform .2s, box-shadow .2s;
-    }
-    .color:hover { transform: scale(1.1); }
-    .color.active { box-shadow: 0 0 0 3px var(--ink); }
-    .gen-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .gen-preview small { color: var(--muted); text-align: center; }
+    /* Future */
+    .future { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+    .future div { padding: 20px; border-radius: 18px; background: linear-gradient(135deg, #f3e8ff, #fce7f3); text-align: center; }
+    .future span { font-size: 1.8rem; display: block; }
+    .future b { color: var(--ink); display: block; margin-top: 6px; }
+    .future small { color: var(--muted); }
 
     /* Quiz */
     .quiz { max-width: 760px; margin: 0 auto; padding: 40px; }
     .quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; color: var(--muted); font-size: .9rem; }
     .progress { height: 8px; border-radius: 999px; background: #eef0f8; overflow: hidden; margin-bottom: 30px; }
     .progress div { height: 100%; width: 0; background: var(--grad); transition: width .4s; }
-    .q-text { font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 20px; font-family: "Space Grotesk", sans-serif; }
+    .q-text { font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 20px; font-family: "Space Grotesk", sans-serif; line-height: 1.4; }
     .options { display: grid; gap: 12px; }
     .opt {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      text-align: left;
-      padding: 16px 18px;
-      border-radius: 14px;
-      border: 2px solid var(--border);
-      background: #fff;
-      font-family: inherit;
-      font-size: 1rem;
-      color: var(--text);
-      cursor: pointer;
-      transition: border-color .2s, background .2s, transform .2s;
+      display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 15px 18px;
+      border-radius: 14px; border: 2px solid var(--border); background: #fff; font-size: 1rem; color: var(--text);
+      cursor: pointer; transition: border-color .2s, background .2s, transform .2s;
     }
     .opt:hover:not(:disabled) { border-color: var(--violet); transform: translateX(4px); }
-    .opt .letter {
-      width: 32px; height: 32px;
-      flex-shrink: 0;
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      background: #f1f2f9;
-    }
+    .opt .letter { width: 32px; height: 32px; flex-shrink: 0; border-radius: 10px; display: grid; place-items: center; font-weight: 700; background: #f1f2f9; }
     .opt.correct { border-color: var(--green); background: #ecfdf5; }
     .opt.correct .letter { background: var(--green); color: #fff; }
-    .opt.wrong { border-color: #e11d48; background: #fff1f2; }
-    .opt.wrong .letter { background: #e11d48; color: #fff; }
+    .opt.wrong { border-color: var(--red); background: #fff1f2; }
+    .opt.wrong .letter { background: var(--red); color: #fff; }
     .opt:disabled { cursor: default; }
     .quiz-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; min-height: 52px; gap: 12px; flex-wrap: wrap; }
     .feedback { font-weight: 600; }
@@ -718,78 +518,42 @@
     /* Team */
     .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; max-width: 960px; margin: 0 auto; }
     .member {
-      text-align: center;
-      padding: 40px 24px 32px;
-      border-radius: 24px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+      text-align: center; padding: 40px 24px 32px; border-radius: 24px; background: var(--card);
+      border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; overflow: hidden;
       transition: transform .3s, box-shadow .3s;
     }
-    .member::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 90px;
-      opacity: .14;
-    }
+    .member::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 90px; opacity: .14; }
     .member:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
     .member .avatar {
-      position: relative;
-      width: 110px; height: 110px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 2.4rem;
-      font-weight: 700;
-      font-family: "Space Grotesk", sans-serif;
-      color: #fff;
-      box-shadow: 0 0 0 6px #fff, 0 12px 30px rgba(0,0,0,.15);
+      position: relative; width: 110px; height: 110px; margin: 0 auto 20px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 2.4rem; font-weight: 700; font-family: "Space Grotesk", sans-serif;
+      color: #fff; box-shadow: 0 0 0 6px #fff, 0 12px 30px rgba(0,0,0,.15);
     }
     .member h3 { font-size: 1.4rem; color: var(--ink); }
     .member p { color: var(--muted); font-size: .92rem; }
     .member .school-tag {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 5px 14px;
-      border-radius: 999px;
-      background: #f3f4fb;
-      font-size: .8rem;
-      font-weight: 600;
-      color: var(--violet);
+      display: inline-block; margin-top: 14px; padding: 5px 14px; border-radius: 999px; background: #f3f4fb;
+      font-size: .8rem; font-weight: 600; color: var(--violet);
     }
     .g1 { background: linear-gradient(135deg, #7c3aed, #ec4899); }
     .g2 { background: linear-gradient(135deg, #06b6d4, #7c3aed); }
     .g3 { background: linear-gradient(135deg, #f59e0b, #ec4899); }
+    .g4 { background: linear-gradient(135deg, #10b981, #06b6d4); }
     .member.m1::before { background: linear-gradient(135deg, #7c3aed, #ec4899); }
     .member.m2::before { background: linear-gradient(135deg, #06b6d4, #7c3aed); }
     .member.m3::before { background: linear-gradient(135deg, #f59e0b, #ec4899); }
 
     /* Footer */
-    footer {
-      margin-top: 110px;
-      background: var(--ink);
-      color: rgba(255,255,255,.75);
-      padding: 60px 0 30px;
-      position: relative;
-      overflow: hidden;
-    }
-    footer::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--grad);
-    }
+    footer { margin-top: 110px; background: var(--ink); color: rgba(255,255,255,.75); padding: 60px 0 30px; position: relative; overflow: hidden; }
+    footer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--grad); }
     .foot-grid { display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
     .foot-grid h3 { color: #fff; font-size: 1.5rem; margin-bottom: 6px; }
     .foot-grid strong { color: #fff; }
-    .foot-qr { background: #fff; padding: 10px; border-radius: 14px; }
-    #footQr { width: 110px; height: 110px; }
-    #footQr img, #footQr canvas { width: 110px !important; height: 110px !important; }
+    .foot-qr { display: flex; align-items: center; gap: 14px; }
+    .foot-qr > div { background: #fff; padding: 10px; border-radius: 14px; }
+    .foot-qr small { max-width: 140px; line-height: 1.4; }
+    #footQr { width: 100px; height: 100px; }
+    #footQr img, #footQr canvas { width: 100px !important; height: 100px !important; }
     .foot-bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.1); text-align: center; font-size: .85rem; }
 
     /* Reveal on scroll */
@@ -801,14 +565,25 @@
       .js .reveal { opacity: 1; transform: none; }
     }
 
+    /* Print: only the student ID cards */
+    @media print {
+      body * { visibility: hidden; }
+      #cardsGrid, #cardsGrid * { visibility: visible; }
+      #cardsGrid { position: absolute; left: 0; top: 0; width: 100%; grid-template-columns: repeat(3, 1fr); }
+      .s-actions, .badge-present { display: none !important; }
+      .s-card { break-inside: avoid; box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
     /* ================= RESPONSIVE ================= */
     @media (max-width: 960px) {
-      .hero-grid, .what-grid, .anatomy, .ecc-wrap, .safety-inner, .gen { grid-template-columns: 1fr; }
+      .hero-grid, .two, .sec-inner, .scanner-layout, .methods { grid-template-columns: 1fr; }
       .hero { text-align: center; }
       .hero p.lead { margin-left: auto; margin-right: auto; }
       .hero-actions, .hero-team { justify-content: center; }
-      .uses-grid { grid-template-columns: repeat(2, 1fr); }
-      .diagram-card { position: static; max-width: 420px; margin: 0 auto; }
+      .grid-4, .future { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+      .steps::before { display: none; }
       .team-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 720px) {
@@ -816,18 +591,19 @@
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .stat:nth-child(2) { border-right: none; }
       .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
-      .timeline::before { left: 10px; }
-      .t-item, .t-item:nth-child(even) { width: 100%; left: 0; text-align: left; padding: 0 0 30px 40px; }
-      .t-item:nth-child(odd)::before, .t-item:nth-child(even)::before { left: 0; right: auto; }
-      .parts, .pc-grid, .team-grid { grid-template-columns: 1fr; }
-      .safety { padding: 36px 22px; }
-      .gen-form, .quiz { padding: 26px 20px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .dark-box { padding: 36px 22px; }
+      .panel, .quiz { padding: 24px 18px; }
+      .note { margin: 0 18px 24px; }
+      .reg-top { grid-template-columns: 1fr; justify-items: center; }
+      .reg-stats { width: 100%; }
       section.block { padding-top: 80px; }
     }
     @media (max-width: 480px) {
-      .uses-grid { grid-template-columns: 1fr; }
-      .scan-box { width: 200px; height: 200px; }
-      .compare-item { flex-direction: column; text-align: center; gap: 10px; }
+      .grid-4, .future, .steps { grid-template-columns: 1fr; }
+      .hero-visual { padding-bottom: 80px; }
+      .toast-present { left: 16px; right: 16px; bottom: 0; justify-content: center; text-align: left; }
+      .id-card { width: 270px; }
     }
   </style>
 </head>
@@ -838,18 +614,18 @@
   <nav id="nav">
     <div class="container nav-inner">
       <a href="#top" class="logo">
-        <span class="logo-mark"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span>
-        <span class="logo-text">QR Explained</span>
+        <span class="logo-mark">✓</span>
+        <span class="logo-text">QR Attendance</span>
       </a>
       <ul class="nav-links">
-        <li><a href="#what">Basics</a></li>
-        <li><a href="#history">History</a></li>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#what">The Idea</a></li>
         <li><a href="#how">How it Works</a></li>
-        <li><a href="#uses">Uses</a></li>
-        <li><a href="#safety">Safety</a></li>
-        <li><a href="#generator">Make One</a></li>
+        <li><a href="#benefits">Benefits</a></li>
+        <li><a href="#security">Security</a></li>
         <li><a href="#quiz">Quiz</a></li>
         <li><a href="#team">Our Team</a></li>
+        <li><a href="#demo" class="cta">Try Demo</a></li>
       </ul>
     </div>
   </nav>
@@ -864,14 +640,14 @@
     <div class="container hero-grid">
       <div>
         <div class="pill"><span class="dot"></span> Oxbridge Secondary School &middot; School Project</div>
-        <h1>Decoding the <span class="grad-text">QR Code</span></h1>
+        <h1>QR Code Based <span class="grad-text">Attendance System</span></h1>
         <p class="lead">
-          The little black-and-white squares that link the real world to the digital one.
-          Find out where they came from, how they work, and how to make your own.
+          No more calling out names one by one. Students scan a QR code and their attendance is
+          marked in seconds — fast, paperless and accurate.
         </p>
         <div class="hero-actions">
-          <a href="#what" class="btn btn-primary">Start Exploring &rarr;</a>
-          <a href="#generator" class="btn btn-ghost">Make a QR Code</a>
+          <a href="#demo" class="btn btn-primary">Try the Live Demo &rarr;</a>
+          <a href="#how" class="btn btn-ghost">How it Works</a>
         </div>
         <div class="hero-team">
           <div class="avatars">
@@ -883,131 +659,108 @@
         </div>
       </div>
 
-      <div class="scanner-wrap">
-        <div class="scanner">
-          <div class="scan-box">
+      <div class="hero-visual">
+        <div class="id-card">
+          <div class="id-top">
+            <div><b>Oxbridge Secondary School</b><small>Student ID Card</small></div>
+            <div class="chip"></div>
+          </div>
+          <div class="id-body">
+            <div class="id-photo g1">HT</div>
+            <div class="id-info">
+              <h3>Haiqa Tariq</h3>
+              <p>ID: OSS-001<br>Attendance Card</p>
+            </div>
+          </div>
+          <div class="id-qr-row">
             <div id="heroQr"></div>
             <div class="scan-line"></div>
           </div>
-          <span class="corner tl"></span><span class="corner tr"></span>
-          <span class="corner bl"></span><span class="corner br"></span>
-          <div class="scanner-caption">📱 Scan me with your phone camera!</div>
+        </div>
+        <div class="toast-present">
+          <div class="tick">✓</div>
+          <div>Haiqa Tariq marked present<small>Just now &middot; OSS-001</small></div>
         </div>
       </div>
     </div>
-    <a href="#what" class="scroll-hint" aria-label="Scroll down"></a>
+    <a href="#problem" class="scroll-hint" aria-label="Scroll down"></a>
   </header>
 
   <!-- ================= STATS ================= -->
   <div class="stats">
     <div class="container">
       <div class="stats-grid reveal">
-        <div class="stat"><div class="num grad-text" data-count="1994">1994</div><p>Year it was invented</p></div>
-        <div class="stat"><div class="num grad-text" data-count="7089">7,089</div><p>Numbers it can store</p></div>
-        <div class="stat"><div class="num grad-text" data-count="30" data-suffix="%">30%</div><p>Damage it can survive</p></div>
-        <div class="stat"><div class="num grad-text" data-count="40">40</div><p>Different sizes</p></div>
+        <div class="stat"><div class="num grad-text">~2 sec</div><p>To mark one student</p></div>
+        <div class="stat"><div class="num grad-text">0</div><p>Paper registers needed</p></div>
+        <div class="stat"><div class="num grad-text">1 scan</div><p>Per student, no typing</p></div>
+        <div class="stat"><div class="num grad-text">Instant</div><p>Attendance reports</p></div>
       </div>
     </div>
   </div>
 
   <main>
 
+    <!-- ================= PROBLEM ================= -->
+    <section class="block" id="problem">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">The Problem</span>
+          <h2>Why Paper Registers <span class="grad-text">Don't Work Well</span></h2>
+          <p>Taking attendance the old way, by calling names and ticking a register, causes lots of problems.</p>
+        </div>
+        <div class="grid-4">
+          <div class="tile reveal"><div class="tile-icon" style="background:#fee2e2">⏳</div><h3>Wastes Time</h3><p>Calling out every name can take several minutes from each lesson, every day.</p></div>
+          <div class="tile reveal"><div class="tile-icon" style="background:#fef3c7">🙋</div><h3>Proxy Attendance</h3><p>A friend can answer "present" for someone who isn't actually in class.</p></div>
+          <div class="tile reveal"><div class="tile-icon" style="background:#e0f2fe">✏️</div><h3>Human Errors</h3><p>Wrong ticks, missed names and messy handwriting lead to wrong records.</p></div>
+          <div class="tile reveal"><div class="tile-icon" style="background:#ede9fe">📚</div><h3>Hard to Manage</h3><p>Registers can be lost or damaged, and working out percentages by hand is slow.</p></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= WHAT ================= -->
     <section class="block" id="what">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">The Basics</span>
-          <h2>What is a <span class="grad-text">QR Code?</span></h2>
-          <p>A barcode that went 2D and became a superstar.</p>
+          <span class="eyebrow">Our Solution</span>
+          <h2>What is a <span class="grad-text">QR Attendance System?</span></h2>
+          <p>A smart way to take attendance using QR codes and a camera.</p>
         </div>
 
-        <div class="what-grid">
+        <div class="two">
           <div class="card reveal">
             <p>
-              A <strong>QR code</strong> — short for <strong>Quick Response code</strong> — is a
-              two-dimensional barcode made of black squares arranged on a white square grid.
+              A <strong>QR code based attendance system</strong> gives every student a unique
+              <strong>QR code</strong>, usually printed on their ID card. The QR code holds the
+              student's <strong>ID number</strong>.
             </p>
             <p>
-              A smartphone camera can read it in under a second and turn it into useful information:
-              a website link, a phone number, a Wi-Fi password, a payment or a secret message.
+              When the student arrives, the teacher scans the code with a phone, tablet or webcam.
+              The system reads the ID, finds the student in the <strong>database</strong>, and
+              automatically marks them <strong>present</strong> with the exact date and time.
             </p>
             <p>
-              A normal barcode stores information in only <strong>one direction</strong> (left to right).
-              A QR code stores it <strong>both across and down</strong>, so it can hold hundreds of times more data.
+              At the end of the day, the school gets a complete digital attendance report, with no
+              paper and no adding up by hand.
             </p>
           </div>
 
-          <div class="card compare reveal">
-            <div class="compare-item">
-              <div class="barcode" id="barcode"></div>
-              <div>
-                <div class="label">Normal Barcode (1D)</div>
-                <small>Reads one way only &middot; about 20 characters</small>
-              </div>
+          <div class="card what-visual reveal">
+            <div class="mini-flow">
+              <div class="node"><span>🪪</span>QR ID Card</div>
+              <div class="arr">→</div>
+              <div class="node"><span>📷</span>Scan</div>
+              <div class="arr">→</div>
+              <div class="node"><span>✅</span>Present!</div>
             </div>
-            <div class="vs">VS</div>
-            <div class="compare-item">
-              <svg class="mini-qr" id="miniQr" viewBox="0 0 21 21" shape-rendering="crispEdges"></svg>
-              <div>
-                <div class="label">QR Code (2D)</div>
-                <small>Reads both ways &middot; up to 4,296 letters &amp; numbers</small>
-              </div>
-            </div>
+            <p>Scan → Check → Save. That's all it takes.</p>
           </div>
         </div>
 
         <div class="fact reveal">
           <div class="em">💡</div>
-          <div><strong>Did you know?</strong> It's called "Quick Response" because it was designed to be
-          read <em>very fast</em> — about 10 times faster than other codes at the time.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= HISTORY ================= -->
-    <section class="block" id="history">
-      <div class="container">
-        <div class="section-head reveal">
-          <span class="eyebrow">History</span>
-          <h2>From Car Factories to <span class="grad-text">Every Pocket</span></h2>
-          <p>How a tool for tracking car parts took over the world.</p>
-        </div>
-
-        <div class="timeline">
-          <div class="t-item reveal">
-            <div class="card">
-              <span class="t-year grad-text">1994</span>
-              <p>Invented in Japan by engineer <strong>Masahiro Hara</strong> at <strong>Denso Wave</strong>,
-              part of the Toyota group, to track car parts quickly in factories.</p>
-            </div>
-          </div>
-          <div class="t-item reveal">
-            <div class="card">
-              <span class="t-year grad-text">Free for All</span>
-              <p>Denso Wave chose not to charge anyone for using the QR code design, so anyone in the world
-              could make and use them for free.</p>
-            </div>
-          </div>
-          <div class="t-item reveal">
-            <div class="card">
-              <span class="t-year grad-text">2000s</span>
-              <p>QR codes became an international standard (ISO/IEC 18004) and phones in Japan
-              started coming with QR readers built in.</p>
-            </div>
-          </div>
-          <div class="t-item reveal">
-            <div class="card">
-              <span class="t-year grad-text">2017</span>
-              <p>iPhone and Android cameras began scanning QR codes automatically, with no extra app needed.</p>
-            </div>
-          </div>
-          <div class="t-item reveal">
-            <div class="card">
-              <span class="t-year grad-text">2020 – Today</span>
-              <p>The COVID-19 pandemic made QR codes part of daily life for contactless menus,
-              payments and check-ins. Now they're everywhere!</p>
-            </div>
-          </div>
+          <div><strong>Quick recap: what is a QR code?</strong> QR stands for <strong>Quick Response</strong>.
+          It's a square barcode invented in Japan in 1994 by Denso Wave. Unlike a normal barcode, it stores
+          information both across and down, so it holds much more data and can be scanned in under a second.</div>
         </div>
       </div>
     </section>
@@ -1017,203 +770,318 @@
       <div class="container">
         <div class="section-head reveal">
           <span class="eyebrow">How it Works</span>
-          <h2>Inside a <span class="grad-text">QR Code</span></h2>
-          <p>Every QR code has special parts. Tap or hover over a part to see where it is.</p>
+          <h2>Four Simple <span class="grad-text">Steps</span></h2>
+          <p>From signing up students to downloading the final report.</p>
         </div>
 
-        <div class="anatomy">
-          <div class="card diagram-card reveal">
-            <svg id="anatomySvg" viewBox="-2 -2 29 29" shape-rendering="crispEdges" aria-label="Diagram of the parts of a QR code"></svg>
-            <div class="diagram-hint">👆 Pick a part to highlight it</div>
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-num">📝<b>1</b></div>
+            <h3>Register Students</h3>
+            <p>Each student's name and class is saved in the system and given a unique ID number.</p>
           </div>
-
-          <div>
-            <div class="parts">
-              <div class="part reveal" tabindex="0" data-part="finder">
-                <h3><span class="swatch" style="background:var(--pink)"></span>Finder Patterns</h3>
-                <p>The three big squares in the corners. They tell the scanner where the code is and which way up it is.</p>
-              </div>
-              <div class="part reveal" tabindex="0" data-part="align">
-                <h3><span class="swatch" style="background:var(--violet)"></span>Alignment Pattern</h3>
-                <p>A smaller square that helps read the code even when it's tilted or on a curved surface.</p>
-              </div>
-              <div class="part reveal" tabindex="0" data-part="timing">
-                <h3><span class="swatch" style="background:var(--cyan)"></span>Timing Patterns</h3>
-                <p>Dotted lines of black and white that help the scanner measure the size of the grid.</p>
-              </div>
-              <div class="part reveal" tabindex="0" data-part="quiet">
-                <h3><span class="swatch" style="background:rgba(6,182,212,.35); border:1px dashed var(--cyan)"></span>Quiet Zone</h3>
-                <p>The empty white border that separates the code from everything around it.</p>
-              </div>
-              <div class="part reveal" tabindex="0" data-part="data">
-                <h3><span class="swatch" style="background:var(--green)"></span>Data Area</h3>
-                <p>All the other squares, which hold the actual information.</p>
-              </div>
-              <div class="part reveal" tabindex="0" data-part="ecc">
-                <h3><span class="swatch" style="background:var(--amber)"></span>Error Correction</h3>
-                <p>Backup data mixed into the code so it still works if part of it is dirty or scratched.</p>
-              </div>
-            </div>
-
-            <div class="binary reveal">
-              <div class="bits">
-                <span class="on">1</span><span>0</span><span class="on">1</span><span class="on">1</span><span>0</span><span>0</span><span class="on">1</span>
-              </div>
-              <p style="flex:1; min-width:220px; color:var(--muted)">
-                Each tiny square is called a <strong style="color:var(--ink)">module</strong>.
-                Black = <strong style="color:var(--ink)">1</strong>, white = <strong style="color:var(--ink)">0</strong>.
-                This is <strong style="color:var(--ink)">binary</strong>, the language computers understand.
-              </p>
-            </div>
+          <div class="step reveal">
+            <div class="step-num">🪪<b>2</b></div>
+            <h3>Generate QR Codes</h3>
+            <p>The system creates a QR code for every ID, printed on the student's ID card.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">📷<b>3</b></div>
+            <h3>Scan in Class</h3>
+            <p>The teacher scans each card. The system marks the student present with the time.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">📊<b>4</b></div>
+            <h3>Get Reports</h3>
+            <p>Attendance is saved instantly. Teachers can view and download daily reports.</p>
           </div>
         </div>
 
-        <div class="ecc-wrap">
-          <div class="reveal">
-            <h3>Error Correction Levels</h3>
-            <p style="color:var(--muted)">QR codes have built-in backup data, so they can still be scanned when part of them is damaged.
-            That's why some companies can put a logo right in the middle of a QR code and it still works!</p>
+        <div class="methods">
+          <div class="method m-a reveal">
+            <span class="tag">Method A</span>
+            <h3>🪪 Student ID Cards</h3>
+            <p>Each student has their own QR code. The teacher's device scans it.</p>
+            <ul>
+              <li>Works with just one phone or laptop</li>
+              <li>Students don't need their own phones</li>
+              <li>Best for schools (this is what our demo uses)</li>
+            </ul>
           </div>
-          <div class="card reveal" id="eccCard">
-            <div class="ecc-row">
-              <div class="ecc-level">L</div>
-              <div><div class="ecc-track"><div class="ecc-fill" data-w="7"></div></div><small>Low</small></div>
-              <div class="ecc-pct">7%</div>
-            </div>
-            <div class="ecc-row">
-              <div class="ecc-level">M</div>
-              <div><div class="ecc-track"><div class="ecc-fill" data-w="15"></div></div><small>Medium</small></div>
-              <div class="ecc-pct">15%</div>
-            </div>
-            <div class="ecc-row">
-              <div class="ecc-level">Q</div>
-              <div><div class="ecc-track"><div class="ecc-fill" data-w="25"></div></div><small>Quartile</small></div>
-              <div class="ecc-pct">25%</div>
-            </div>
-            <div class="ecc-row">
-              <div class="ecc-level">H</div>
-              <div><div class="ecc-track"><div class="ecc-fill" data-w="30"></div></div><small>High</small></div>
-              <div class="ecc-pct">30%</div>
-            </div>
+          <div class="method m-b reveal">
+            <span class="tag">Method B</span>
+            <h3>📱 Class QR Code</h3>
+            <p>The teacher shows one QR code on the board. Students scan it with their own phones.</p>
+            <ul>
+              <li>Very fast for big classes and lectures</li>
+              <li>The code changes every few seconds to stop sharing</li>
+              <li>Common in colleges, offices and events</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= USES ================= -->
-    <section class="block" id="uses">
+    <!-- ================= FLOWCHART ================= -->
+    <section class="block" id="flow">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Everyday Life</span>
-          <h2>Where Do We <span class="grad-text">Use Them?</span></h2>
-          <p>Look around — you'll spot QR codes almost everywhere.</p>
+          <span class="eyebrow">Flowchart</span>
+          <h2>What Happens in <span class="grad-text">One Scan?</span></h2>
+          <p>The system checks a few things before saving attendance.</p>
         </div>
-        <div class="uses-grid">
-          <div class="use reveal"><div class="use-icon" style="background:#fce7f3">🍽️</div><h3>Restaurants</h3><p>Digital menus and ordering from your table.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#ede9fe">💳</div><h3>Payments</h3><p>Paying in shops with mobile wallets and banking apps.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#e0f2fe">🎫</div><h3>Tickets</h3><p>Boarding passes, cinema tickets and event entry.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#fef3c7">🏫</div><h3>Education</h3><p>Linking worksheets to videos, quizzes and lessons.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#dcfce7">📦</div><h3>Shipping</h3><p>Tracking parcels and products in warehouses.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#fee2e2">📶</div><h3>Wi-Fi Sharing</h3><p>Join a network without typing a long password.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#cffafe">🏥</div><h3>Healthcare</h3><p>Patient wristbands and medicine information.</p></div>
-          <div class="use reveal"><div class="use-icon" style="background:#f3e8ff">📢</div><h3>Advertising</h3><p>Posters and products that link to offers online.</p></div>
+
+        <div class="flow reveal">
+          <div class="f-step"><div class="f-ic">🪪</div><div><b>Student shows their QR card</b><small>The QR code holds the student's unique ID</small></div></div>
+          <div class="f-arrow"></div>
+          <div class="f-step"><div class="f-ic">📷</div><div><b>Camera scans and reads the code</b><small>e.g. "OSS-001"</small></div></div>
+          <div class="f-arrow"></div>
+          <div class="f-step decision"><div class="f-ic">🔎</div><div><b>Is this ID in the student database?</b><span class="branch">✕ No → show "Unknown card" error</span></div></div>
+          <div class="f-arrow"><span>✓ Yes</span></div>
+          <div class="f-step decision"><div class="f-ic">📅</div><div><b>Already marked present today?</b><span class="branch">✕ Yes → show "Already present" (no duplicate)</span></div></div>
+          <div class="f-arrow"><span>✓ No</span></div>
+          <div class="f-step"><div class="f-ic">💾</div><div><b>Save: Present + date + time</b><small>Stored in the attendance database</small></div></div>
+          <div class="f-arrow"></div>
+          <div class="f-step done"><div class="f-ic">✅</div><div><b>Confirmation beep and message</b><small>"Haiqa Tariq marked present at 8:02 AM"</small></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ================= PROS & CONS ================= -->
-    <section class="block" id="pros-cons">
+    <!-- ================= COMPONENTS ================= -->
+    <section class="block" id="components">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Weighing it Up</span>
-          <h2>The Good &amp; <span class="grad-text">The Not-So-Good</span></h2>
+          <span class="eyebrow">System Parts</span>
+          <h2>What You Need to <span class="grad-text">Build It</span></h2>
         </div>
-        <div class="pc-grid">
+        <div class="grid-3">
+          <div class="comp reveal">
+            <h3><span style="background:#ede9fe">🖥️</span>Hardware</h3>
+            <ul>
+              <li>📱 <span><b>Scanner</b> – a smartphone, tablet or laptop webcam</span></li>
+              <li>🖨️ <span><b>Printer</b> – to print QR codes on ID cards</span></li>
+              <li>🪪 <span><b>ID cards</b> – one for each student</span></li>
+            </ul>
+          </div>
+          <div class="comp reveal">
+            <h3><span style="background:#fce7f3">💻</span>Software</h3>
+            <ul>
+              <li>🔳 <span><b>QR generator</b> – creates a code for each student</span></li>
+              <li>🔍 <span><b>Scanner app</b> – reads codes using the camera</span></li>
+              <li>📊 <span><b>Dashboard</b> – shows reports and percentages</span></li>
+            </ul>
+          </div>
+          <div class="comp reveal">
+            <h3><span style="background:#e0f2fe">🗄️</span>Database</h3>
+            <ul>
+              <li>👩‍🎓 <span><b>Students table</b> – ID, name, class</span></li>
+              <li>📅 <span><b>Attendance table</b> – ID, date, time, status</span></li>
+              <li>☁️ <span><b>Server / cloud</b> – keeps records safe and shared</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DEMO ================= -->
+    <section class="block" id="demo">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Live Demo</span>
+          <h2>Try Our <span class="grad-text">Attendance System</span></h2>
+          <p>This is a working model. Make student QR cards, scan them with your camera, and watch the register update.</p>
+        </div>
+
+        <div class="card demo reveal">
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="students">🪪 1. Student Cards</button>
+            <button class="tab" data-tab="scan">📷 2. Scan Attendance</button>
+            <button class="tab" data-tab="register">📊 3. Attendance Register</button>
+          </div>
+
+          <!-- Students -->
+          <div class="panel active" id="panel-students">
+            <div class="panel-head">
+              <div>
+                <h3>Register Students</h3>
+                <p>Add a student to create their QR ID card automatically.</p>
+              </div>
+              <button class="btn btn-light btn-sm" id="printCards">🖨 Print ID Cards</button>
+            </div>
+            <form class="add-form" id="addForm">
+              <input class="input" id="newName" type="text" placeholder="Student name, e.g. Ayesha Khan" maxlength="40" required>
+              <button class="btn btn-primary" type="submit">+ Add Student</button>
+            </form>
+            <div class="cards-grid" id="cardsGrid"></div>
+          </div>
+
+          <!-- Scan -->
+          <div class="panel" id="panel-scan">
+            <div class="scanner-layout">
+              <div>
+                <div class="cam" id="cam">
+                  <video id="video" playsinline muted></video>
+                  <div class="cam-msg" id="camMsg"><span class="big">📷</span>Press <b>Start Camera</b>, then hold a student QR card in front of it.</div>
+                  <div class="frame"><i></i><i></i><i></i><i></i><div class="scan-line"></div></div>
+                </div>
+                <canvas id="scanCanvas" hidden></canvas>
+                <div class="cam-controls">
+                  <button class="btn btn-primary" id="startCam">▶ Start Camera</button>
+                  <button class="btn btn-light" id="stopCam" disabled>■ Stop</button>
+                </div>
+              </div>
+              <div>
+                <div class="scan-result" id="scanResult">
+                  <div class="r-ic">…</div>
+                  <div><b>Waiting for a scan</b><small>Results will appear here</small></div>
+                </div>
+                <div class="card sim" style="padding:20px">
+                  <h4>No camera? Simulate a scan</h4>
+                  <p>Tap a student to pretend their card was scanned. Try tapping one twice!</p>
+                  <div class="chips" id="simChips"></div>
+                </div>
+                <p style="font-size:.85rem; color:var(--muted); margin-top:14px">
+                  💡 Tip: open the <b>Student Cards</b> tab on another phone and scan its screen, or scan the card at the top of this page!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Register -->
+          <div class="panel" id="panel-register">
+            <div class="panel-head">
+              <div>
+                <h3>Today's Attendance</h3>
+                <p id="todayLabel"></p>
+              </div>
+            </div>
+            <div class="reg-top">
+              <div class="ring">
+                <svg viewBox="0 0 130 130">
+                  <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset=".6" stop-color="#ec4899"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs>
+                  <circle class="bg" cx="65" cy="65" r="54"/>
+                  <circle class="fg" id="ringFg" cx="65" cy="65" r="54" stroke-dasharray="339.3" stroke-dashoffset="339.3"/>
+                </svg>
+                <div class="pct"><div><b id="pctText">0%</b><small>present</small></div></div>
+              </div>
+              <div class="reg-stats">
+                <div class="reg-stat"><b id="statTotal">0</b><small>Total</small></div>
+                <div class="reg-stat"><b id="statPresent" style="color:var(--green)">0</b><small>Present</small></div>
+                <div class="reg-stat"><b id="statAbsent" style="color:var(--red)">0</b><small>Absent</small></div>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>Student ID</th><th>Name</th><th>Status</th><th>Time</th></tr></thead>
+                <tbody id="regBody"></tbody>
+              </table>
+            </div>
+            <div class="reg-actions">
+              <button class="btn btn-dark btn-sm" id="downloadCsv">⬇ Download Report (CSV)</button>
+              <button class="btn btn-danger btn-sm" id="resetDay">↺ Reset Today</button>
+            </div>
+          </div>
+
+          <div class="note">
+            ℹ️ This demo saves data only in <b>this browser</b>. A real school system would store it in an
+            online database so every teacher and the office could see the same records.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= BENEFITS ================= -->
+    <section class="block" id="benefits">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Comparison</span>
+          <h2>Paper Register vs <span class="grad-text">QR System</span></h2>
+        </div>
+        <div class="table-wrap reveal" style="background:#fff; box-shadow:var(--shadow)">
+          <table class="compare-table">
+            <thead><tr><th>Feature</th><th>📒 Paper Register</th><th>📱 QR Attendance</th></tr></thead>
+            <tbody>
+              <tr><td>Speed</td><td>Slow – names called one by one</td><td>Fast – about 2 seconds per student</td></tr>
+              <tr><td>Accuracy</td><td>Mistakes from manual ticking</td><td>Automatic and accurate</td></tr>
+              <tr><td>Proxy attendance</td><td>Easy to answer for a friend</td><td>Harder – each student needs their own code</td></tr>
+              <tr><td>Records</td><td>Can be lost, torn or damaged</td><td>Saved safely in a database</td></tr>
+              <tr><td>Reports</td><td>Calculated by hand</td><td>Generated instantly</td></tr>
+              <tr><td>Environment</td><td>Uses lots of paper</td><td>Paperless</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two" style="margin-top:40px">
           <div class="pc pros reveal">
             <h3>👍 Advantages</h3>
             <ul>
-              <li><b>✓</b> Super fast to scan — "Quick Response"</li>
-              <li><b>✓</b> Stores far more data than a normal barcode</li>
-              <li><b>✓</b> Free to create and use</li>
-              <li><b>✓</b> Still works when partly damaged</li>
-              <li><b>✓</b> Can be scanned from any angle</li>
-              <li><b>✓</b> Contactless and saves paper</li>
+              <li><b>✓</b> Saves lesson time</li>
+              <li><b>✓</b> Records the exact time each student arrives</li>
+              <li><b>✓</b> Reduces proxy (fake) attendance</li>
+              <li><b>✓</b> No paper, so it's eco-friendly</li>
+              <li><b>✓</b> Low cost: QR codes are free to make</li>
+              <li><b>✓</b> Instant reports for teachers and parents</li>
             </ul>
           </div>
           <div class="pc cons reveal">
             <h3>👎 Disadvantages</h3>
             <ul>
-              <li><b>✕</b> Needs a smartphone or scanner to read</li>
-              <li><b>✕</b> Often needs internet to open links</li>
-              <li><b>✕</b> You can't tell where it leads just by looking</li>
-              <li><b>✕</b> Scammers can make fake QR codes</li>
-              <li><b>✕</b> Won't scan if printed too small or blurry</li>
+              <li><b>✕</b> Needs a working phone, camera or scanner</li>
+              <li><b>✕</b> Online systems need internet and power</li>
+              <li><b>✕</b> Students may forget or lose their cards</li>
+              <li><b>✕</b> A card could still be given to a friend</li>
+              <li><b>✕</b> Student data must be kept private and secure</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= SAFETY ================= -->
-    <section class="block" id="safety">
+    <!-- ================= SECURITY ================= -->
+    <section class="block" id="security">
       <div class="container">
-        <div class="safety reveal">
-          <div class="safety-inner">
+        <div class="dark-box reveal">
+          <div class="sec-inner">
             <div>
-              <span class="eyebrow" style="background:rgba(255,255,255,.1); color:#f0abfc">Stay Safe</span>
-              <h2>Watch Out for <span class="grad-text">"Quishing"</span></h2>
-              <p class="lead">Quishing (QR + phishing) is when scammers use fake QR codes to steal information.
-              Here's how to protect yourself.</p>
+              <span class="eyebrow" style="background:rgba(255,255,255,.1); color:#f0abfc">Security</span>
+              <h2>How to Stop <span class="grad-text">Cheating</span></h2>
+              <p class="lead">What if a student shares their QR code with a friend? Real systems use extra checks to make sure the right person is marked present.</p>
             </div>
             <div class="tips">
-              <div class="tip"><div class="em">🔍</div><div><strong>Check the link first</strong><span>Read the web address your phone shows before you open it.</span></div></div>
-              <div class="tip"><div class="em">🏷️</div><div><strong>Look for stickers</strong><span>Scammers stick fake codes on top of real ones in public places.</span></div></div>
-              <div class="tip"><div class="em">🔐</div><div><strong>Guard your details</strong><span>Never type passwords or bank details on a site from an unknown code.</span></div></div>
-              <div class="tip"><div class="em">👨‍👩‍👧</div><div><strong>Ask an adult</strong><span>If you're not sure a QR code is safe, ask before scanning.</span></div></div>
+              <div class="tip"><div class="em">🔄</div><div><strong>Dynamic QR codes</strong><span>The class QR code changes every few seconds, so a photo of it quickly stops working.</span></div></div>
+              <div class="tip"><div class="em">⏰</div><div><strong>Time limits</strong><span>Scanning only works during the first few minutes of the lesson.</span></div></div>
+              <div class="tip"><div class="em">📍</div><div><strong>Location check</strong><span>The phone's GPS confirms the student is really at school.</span></div></div>
+              <div class="tip"><div class="em">🧑‍💼</div><div><strong>Photo or face check</strong><span>The system shows the student's photo, or uses face recognition, to confirm it's them.</span></div></div>
+              <div class="tip"><div class="em">👀</div><div><strong>Teacher supervision</strong><span>The teacher watches the scans and does a quick head count.</span></div></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= GENERATOR ================= -->
-    <section class="block" id="generator">
+    <!-- ================= USES / FUTURE ================= -->
+    <section class="block" id="uses">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Try it Yourself</span>
-          <h2>Make Your Own <span class="grad-text">QR Code</span></h2>
-          <p>Type anything, pick a colour, and scan the result with your phone.</p>
+          <span class="eyebrow">Real World</span>
+          <h2>Where is it <span class="grad-text">Used?</span></h2>
+        </div>
+        <div class="grid-4">
+          <div class="tile reveal"><div class="tile-icon" style="background:#fce7f3">🏫</div><h3>Schools</h3><p>Daily class attendance for students.</p></div>
+          <div class="tile reveal"><div class="tile-icon" style="background:#ede9fe">🎓</div><h3>Universities</h3><p>Lecture attendance in big halls.</p></div>
+          <div class="tile reveal"><div class="tile-icon" style="background:#e0f2fe">🏢</div><h3>Offices</h3><p>Staff check-in and check-out times.</p></div>
+          <div class="tile reveal"><div class="tile-icon" style="background:#fef3c7">🎤</div><h3>Events</h3><p>Seminars, workshops and conferences.</p></div>
         </div>
 
-        <div class="card gen reveal">
-          <div class="gen-form">
-            <label class="field" for="qrText">Text or website link</label>
-            <input class="input" type="text" id="qrText" value="Hello from Haiqa, Jannat & Zainab!">
-            <div class="presets">
-              <button class="preset" data-text="Hello from Haiqa, Jannat & Zainab!">👋 Hello</button>
-              <button class="preset" data-text="https://haiqa-tariq-qr-codes.vercel.app">🌐 Our website</button>
-              <button class="preset" data-text="QR stands for Quick Response!">💡 Fun fact</button>
-            </div>
-
-            <label class="field">Colour</label>
-            <div class="colors" id="colors">
-              <button class="color active" data-color="#0b1026" style="background:#0b1026" aria-label="Black"></button>
-              <button class="color" data-color="#7c3aed" style="background:#7c3aed" aria-label="Purple"></button>
-              <button class="color" data-color="#db2777" style="background:#db2777" aria-label="Pink"></button>
-              <button class="color" data-color="#0891b2" style="background:#0891b2" aria-label="Cyan"></button>
-              <button class="color" data-color="#059669" style="background:#059669" aria-label="Green"></button>
-              <button class="color" data-color="#c2410c" style="background:#c2410c" aria-label="Orange"></button>
-            </div>
-
-            <div class="gen-actions">
-              <button class="btn btn-primary" id="makeBtn">✨ Generate</button>
-              <button class="btn btn-light" id="downloadBtn">⬇ Download</button>
-            </div>
-          </div>
-          <div class="gen-preview">
-            <div class="qr-frame"><div id="qrOutput"></div></div>
-            <small>Point your phone camera at the code to test it.</small>
-          </div>
+        <div class="section-head reveal" style="margin-top:70px; margin-bottom:0">
+          <span class="eyebrow">Future Scope</span>
+          <h2 style="font-size:clamp(1.6rem,3.5vw,2.2rem)">How it Could <span class="grad-text">Get Even Better</span></h2>
+        </div>
+        <div class="future">
+          <div class="reveal"><span>📩</span><b>SMS to Parents</b><small>Alert parents if their child is absent</small></div>
+          <div class="reveal"><span>🙂</span><b>Face Recognition</b><small>Double-check every student's identity</small></div>
+          <div class="reveal"><span>📈</span><b>Smart Analytics</b><small>Spot students with low attendance early</small></div>
+          <div class="reveal"><span>🔗</span><b>School Portal</b><small>Connect with results and timetables</small></div>
         </div>
       </div>
     </section>
@@ -1224,7 +1092,7 @@
         <div class="section-head reveal">
           <span class="eyebrow">Quiz Time</span>
           <h2>How Much Did <span class="grad-text">You Learn?</span></h2>
-          <p>Five quick questions. Let's see if you're a QR expert!</p>
+          <p>Six quick questions about QR attendance systems.</p>
         </div>
         <div class="card quiz reveal" id="quizBox"></div>
       </div>
@@ -1268,37 +1136,36 @@
     <div class="container">
       <div class="foot-grid">
         <div>
-          <h3>Decoding the QR Code</h3>
+          <h3>QR Code Based Attendance System</h3>
           <p>A school project by <strong>Haiqa Tariq</strong>, <strong>Jannat</strong> &amp; <strong>Zainab</strong></p>
           <p>Oxbridge Secondary School</p>
         </div>
-        <div class="foot-qr"><div id="footQr"></div></div>
+        <div class="foot-qr">
+          <div><div id="footQr"></div></div>
+          <small>Scan to open this website on your phone</small>
+        </div>
       </div>
-      <div class="foot-bottom">Made with 💜 for our school project on QR Codes</div>
+      <div class="foot-bottom">Made with 💜 for our school project</div>
     </div>
   </footer>
 
-  <!-- QR code library (needs internet) -->
+  <!-- QR code maker + QR code reader (need internet) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
   <script>
     const SITE_URL = "https://haiqa-tariq-qr-codes.vercel.app";
+    const PREFIX = "OSS-ATTENDANCE";
+    const STORE_KEY = "oss-qr-attendance-v1";
     const hasQR = typeof QRCode !== "undefined";
 
     function drawQR(el, text, size, color) {
       el.innerHTML = "";
-      if (!hasQR) {
-        el.textContent = "Connect to the internet to see the QR code.";
-        return;
-      }
-      new QRCode(el, {
-        text: text,
-        width: size,
-        height: size,
-        colorDark: color || "#0b1026",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-      });
+      if (!hasQR) { el.textContent = "Connect to the internet to see QR codes."; return; }
+      new QRCode(el, { text, width: size, height: size, colorDark: color || "#0b1026", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
     }
+    const payloadFor = s => `${PREFIX}|${s.id}|${s.name}`;
+    const esc = str => String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const initials = name => name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 
     // ----- Nav background on scroll -----
     const nav = document.getElementById("nav");
@@ -1320,171 +1187,323 @@
       floaters.appendChild(s);
     }
 
-    // ----- Hero & footer QR codes link to this website -----
-    drawQR(document.getElementById("heroQr"), SITE_URL, 212);
-    drawQR(document.getElementById("footQr"), SITE_URL, 110);
-
-    // ----- Simple seeded random so diagrams look the same every time -----
-    function seeded(seed) {
-      return () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    }
-
-    // ----- Barcode illustration -----
-    const barcode = document.getElementById("barcode");
-    const rb = seeded(7);
-    for (let i = 0; i < 26; i++) {
-      const bar = document.createElement("i");
-      bar.style.width = (rb() > 0.6 ? 4 : rb() > 0.5 ? 2 : 1) + "px";
-      bar.style.opacity = rb() > 0.25 ? 1 : 0;
-      barcode.appendChild(bar);
-    }
-
-    // ----- Build a QR-style grid as SVG -----
-    const SVG_NS = "http://www.w3.org/2000/svg";
-    function rect(svg, x, y, w, h, cls) {
-      const r = document.createElementNS(SVG_NS, "rect");
-      r.setAttribute("x", x); r.setAttribute("y", y);
-      r.setAttribute("width", w); r.setAttribute("height", h);
-      if (cls) r.setAttribute("class", cls);
-      svg.appendChild(r);
-      return r;
-    }
-
-    function buildGrid(size, withAlign, seed) {
-      const rand = seeded(seed);
-      const cells = [];
-      const finders = [[0, 0], [size - 7, 0], [0, size - 7]];
-      const al = size - 9; // alignment pattern top-left
-      for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-          let type = null, dark = false;
-          for (const [fx, fy] of finders) {
-            if (x >= fx - 1 && x <= fx + 7 && y >= fy - 1 && y <= fy + 7) {
-              type = "sep";
-              const dx = x - fx, dy = y - fy;
-              if (dx >= 0 && dx < 7 && dy >= 0 && dy < 7) {
-                type = "finder";
-                dark = dx === 0 || dx === 6 || dy === 0 || dy === 6 || (dx >= 2 && dx <= 4 && dy >= 2 && dy <= 4);
-              }
-            }
-          }
-          if (!type && withAlign && x >= al && x < al + 5 && y >= al && y < al + 5) {
-            const dx = x - al, dy = y - al;
-            type = "align";
-            dark = dx === 0 || dx === 4 || dy === 0 || dy === 4 || (dx === 2 && dy === 2);
-          }
-          if (!type && (y === 6 || x === 6)) {
-            type = "timing";
-            dark = (y === 6 ? x : y) % 2 === 0;
-          }
-          if (!type) {
-            type = "data";
-            dark = rand() > 0.5;
-            if (dark && rand() > 0.55) type = "data ecc";
-          }
-          if (dark) cells.push({ x, y, type });
-        }
-      }
-      return cells;
-    }
-
-    // mini QR in "What is it" section
-    const miniQr = document.getElementById("miniQr");
-    buildGrid(21, false, 42).forEach(c => rect(miniQr, c.x, c.y, 1.02, 1.02).setAttribute("fill", "#0b1026"));
-
-    // anatomy diagram
-    const svg = document.getElementById("anatomySvg");
-    rect(svg, -2, -2, 29, 29, "quiet");
-    rect(svg, 0, 0, 25, 25).setAttribute("fill", "#fff");
-    buildGrid(25, true, 2024).forEach(c => rect(svg, c.x, c.y, 1.02, 1.02, "m " + c.type));
-
-    let locked = null;
-    const parts = document.querySelectorAll(".part");
-    function highlight(part) {
-      if (part) svg.dataset.hl = part; else delete svg.dataset.hl;
-      parts.forEach(p => p.classList.toggle("active", p.dataset.part === part));
-    }
-    parts.forEach(p => {
-      p.addEventListener("mouseenter", () => highlight(p.dataset.part));
-      p.addEventListener("mouseleave", () => highlight(locked));
-      p.addEventListener("focus", () => highlight(p.dataset.part));
-      p.addEventListener("click", () => {
-        locked = locked === p.dataset.part ? null : p.dataset.part;
-        highlight(locked);
-      });
-    });
-
-    // ----- Reveal on scroll + counters + ECC bars -----
-    function animateCount(el) {
-      const target = +el.dataset.count;
-      const suffix = el.dataset.suffix || "";
-      const start = target > 1000 && target < 2100 ? 1900 : 0;
-      const t0 = performance.now();
-      const dur = 1400;
-      function step(t) {
-        const p = Math.min((t - t0) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const val = Math.round(start + (target - start) * eased);
-        el.textContent = (target === 1994 ? val : val.toLocaleString()) + suffix;
-        if (p < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
+    // ----- Reveal on scroll -----
     const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("in");
-        e.target.querySelectorAll("[data-count]").forEach(animateCount);
-        if (e.target.id === "eccCard") {
-          e.target.querySelectorAll(".ecc-fill").forEach(f => f.style.width = (f.dataset.w / 30 * 100) + "%");
-        }
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.15 });
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
     document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-    // ----- Generator -----
-    const output = document.getElementById("qrOutput");
-    const textInput = document.getElementById("qrText");
-    let qrColor = "#0b1026";
+    // =====================================================
+    //                 ATTENDANCE DEMO
+    // =====================================================
+    const DEFAULT_DB = {
+      nextNum: 4,
+      students: [
+        { id: "OSS-001", name: "Haiqa Tariq" },
+        { id: "OSS-002", name: "Jannat" },
+        { id: "OSS-003", name: "Zainab" }
+      ],
+      attendance: {} // { "2026-10-04": { "OSS-001": 1730000000000 } }
+    };
 
-    function makeQR() {
-      const text = textInput.value.trim();
-      if (!text) { output.innerHTML = ""; output.textContent = "Type something first!"; return; }
-      drawQR(output, text, 220, qrColor);
+    function loadDb() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORE_KEY));
+        if (saved && Array.isArray(saved.students)) return saved;
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_DB));
+    }
+    function saveDb() {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(db)); } catch (e) {}
+    }
+    let db = loadDb();
+
+    const todayKey = () => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    };
+    const todayRecords = () => (db.attendance[todayKey()] ||= {});
+    const fmtTime = ts => new Date(ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit", second: "2-digit" });
+
+    // ----- Hero card & footer QR -----
+    drawQR(document.getElementById("heroQr"), payloadFor(DEFAULT_DB.students[0]), 150);
+    drawQR(document.getElementById("footQr"), SITE_URL, 100);
+
+    // ----- Tabs -----
+    const tabs = document.querySelectorAll(".tab");
+    function showTab(name) {
+      tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+      document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + name));
+      if (name !== "scan") stopCamera();
+      if (name === "register") renderRegister();
+    }
+    tabs.forEach(t => t.addEventListener("click", () => showTab(t.dataset.tab)));
+
+    // ----- Student cards -----
+    const cardsGrid = document.getElementById("cardsGrid");
+    const gradients = ["g1", "g2", "g3", "g4"];
+
+    function renderStudents() {
+      const recs = todayRecords();
+      cardsGrid.innerHTML = "";
+      db.students.forEach((s, i) => {
+        const card = document.createElement("div");
+        card.className = "s-card";
+        card.innerHTML = `
+          <div class="id-top ${gradients[i % gradients.length]}">
+            <div><b>Oxbridge Secondary School</b><small>Student ID Card</small></div>
+            <div class="chip"></div>
+          </div>
+          ${recs[s.id] ? '<span class="badge-present">✓ Present</span>' : ""}
+          <div class="s-body">
+            <div class="s-qr"></div>
+            <h4>${esc(s.name)}</h4>
+            <div class="s-id">${s.id}</div>
+            <div class="s-actions">
+              <button class="dl">⬇ Save QR</button>
+              <button class="del">✕ Remove</button>
+            </div>
+          </div>`;
+        drawQR(card.querySelector(".s-qr"), payloadFor(s), 130);
+        card.querySelector(".dl").addEventListener("click", () => {
+          const canvas = card.querySelector(".s-qr canvas");
+          if (!canvas) return;
+          const a = document.createElement("a");
+          a.download = `${s.id}-${s.name.replace(/\s+/g, "-")}-QR.png`;
+          a.href = canvas.toDataURL("image/png");
+          a.click();
+        });
+        card.querySelector(".del").addEventListener("click", () => {
+          if (!confirm(`Remove ${s.name} from the system?`)) return;
+          db.students = db.students.filter(x => x.id !== s.id);
+          saveDb();
+          renderAll();
+        });
+        cardsGrid.appendChild(card);
+      });
+      if (!db.students.length) {
+        cardsGrid.innerHTML = '<p style="color:var(--muted)">No students yet. Add one above!</p>';
+      }
     }
 
-    document.querySelectorAll(".color").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".color").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        qrColor = btn.dataset.color;
-        makeQR();
-      });
+    document.getElementById("addForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const input = document.getElementById("newName");
+      const name = input.value.trim().replace(/\|/g, "");
+      if (!name) return;
+      const id = "OSS-" + String(db.nextNum++).padStart(3, "0");
+      db.students.push({ id, name });
+      saveDb();
+      input.value = "";
+      renderAll();
     });
-    document.querySelectorAll(".preset").forEach(btn => {
-      btn.addEventListener("click", () => { textInput.value = btn.dataset.text; makeQR(); });
-    });
-    document.getElementById("makeBtn").addEventListener("click", makeQR);
-    textInput.addEventListener("keydown", e => { if (e.key === "Enter") makeQR(); });
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      const canvas = output.querySelector("canvas");
-      if (!canvas) { makeQR(); return; }
-      const link = document.createElement("a");
-      link.download = "my-qr-code.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    });
-    makeQR();
+    document.getElementById("printCards").addEventListener("click", () => window.print());
 
-    // ----- Quiz -----
+    // ----- Marking attendance -----
+    const resultBox = document.getElementById("scanResult");
+    function showResult(type, title, sub) {
+      const icons = { ok: "✓", warn: "!", error: "✕" };
+      resultBox.className = "scan-result " + type;
+      resultBox.innerHTML = `<div class="r-ic">${icons[type]}</div><div><b>${esc(title)}</b><small>${esc(sub)}</small></div>`;
+      void resultBox.offsetWidth; // restart pop animation
+      resultBox.classList.add("pop");
+    }
+
+    let audioCtx;
+    function beep(ok) {
+      try {
+        audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.frequency.value = ok ? 880 : 220;
+        o.type = ok ? "sine" : "square";
+        g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (ok ? 0.25 : 0.4));
+        o.connect(g); g.connect(audioCtx.destination);
+        o.start(); o.stop(audioCtx.currentTime + 0.4);
+      } catch (e) {}
+      if (navigator.vibrate) navigator.vibrate(ok ? 80 : [60, 60, 60]);
+    }
+
+    function markPresent(id) {
+      const s = db.students.find(x => x.id === id);
+      if (!s) {
+        beep(false);
+        showResult("error", "Unknown card", `ID "${id}" is not registered in the system.`);
+        return "unknown";
+      }
+      const recs = todayRecords();
+      if (recs[id]) {
+        beep(false);
+        showResult("warn", `${s.name} is already present`, `Marked at ${fmtTime(recs[id])}. No duplicate saved.`);
+        return "duplicate";
+      }
+      recs[id] = Date.now();
+      saveDb();
+      beep(true);
+      showResult("ok", `${s.name} marked present`, `${s.id} · ${fmtTime(recs[id])}`);
+      renderStudents();
+      renderRegister();
+      return "ok";
+    }
+
+    function handleScan(text) {
+      const parts = text.split("|");
+      if (parts[0] !== PREFIX || !parts[1]) {
+        beep(false);
+        showResult("error", "Not an attendance card", "This QR code doesn't belong to our system.");
+        return "invalid";
+      }
+      return markPresent(parts[1]);
+    }
+
+    // ----- Simulated scans -----
+    function renderSimChips() {
+      const box = document.getElementById("simChips");
+      box.innerHTML = "";
+      db.students.forEach(s => {
+        const b = document.createElement("button");
+        b.className = "chip-btn";
+        b.textContent = "🪪 " + s.name;
+        b.addEventListener("click", () => handleScan(payloadFor(s)));
+        box.appendChild(b);
+      });
+      const fake = document.createElement("button");
+      fake.className = "chip-btn fake";
+      fake.textContent = "❓ Unknown card";
+      fake.addEventListener("click", () => handleScan(`${PREFIX}|OSS-999|Stranger`));
+      box.appendChild(fake);
+    }
+
+    // ----- Camera scanning -----
+    const video = document.getElementById("video");
+    const cam = document.getElementById("cam");
+    const camMsg = document.getElementById("camMsg");
+    const canvas = document.getElementById("scanCanvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const startBtn = document.getElementById("startCam");
+    const stopBtn = document.getElementById("stopCam");
+    let stream = null, rafId = null, lastText = "", lastTime = 0;
+
+    async function startCamera() {
+      if (typeof jsQR === "undefined") {
+        camMsg.innerHTML = '<span class="big">📡</span>Please connect to the internet to use the scanner.';
+        return;
+      }
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        camMsg.innerHTML = '<span class="big">🚫</span>This browser can\'t use the camera here. Use the simulate buttons instead.';
+        return;
+      }
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
+      } catch (e) {
+        camMsg.innerHTML = '<span class="big">🚫</span>Camera permission was blocked or no camera was found. Use the simulate buttons instead.';
+        return;
+      }
+      video.srcObject = stream;
+      await video.play();
+      cam.classList.add("on");
+      camMsg.style.display = "none";
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      tick();
+    }
+
+    function stopCamera() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      stream = null;
+      video.srcObject = null;
+      cam.classList.remove("on");
+      camMsg.style.display = "";
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    }
+
+    function tick() {
+      if (!stream) return;
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        const scale = Math.min(1, 640 / video.videoWidth);
+        canvas.width = Math.round(video.videoWidth * scale);
+        canvas.height = Math.round(video.videoHeight * scale);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" });
+        if (code && code.data) {
+          const now = Date.now();
+          // ignore the same card held in front of the camera for a few seconds
+          if (code.data !== lastText || now - lastTime > 3000) {
+            lastText = code.data;
+            lastTime = now;
+            handleScan(code.data);
+          }
+        }
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+    startBtn.addEventListener("click", startCamera);
+    stopBtn.addEventListener("click", stopCamera);
+
+    // ----- Register -----
+    function renderRegister() {
+      const recs = todayRecords();
+      const total = db.students.length;
+      const present = db.students.filter(s => recs[s.id]).length;
+      const pct = total ? Math.round((present / total) * 100) : 0;
+      document.getElementById("todayLabel").textContent =
+        new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+      document.getElementById("statTotal").textContent = total;
+      document.getElementById("statPresent").textContent = present;
+      document.getElementById("statAbsent").textContent = total - present;
+      document.getElementById("pctText").textContent = pct + "%";
+      document.getElementById("ringFg").style.strokeDashoffset = 339.3 * (1 - pct / 100);
+      document.getElementById("regBody").innerHTML = db.students.map((s, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${s.id}</td>
+          <td>${esc(s.name)}</td>
+          <td>${recs[s.id] ? '<span class="status p">● Present</span>' : '<span class="status a">● Absent</span>'}</td>
+          <td>${recs[s.id] ? fmtTime(recs[s.id]) : "—"}</td>
+        </tr>`).join("") || '<tr><td colspan="5" style="color:var(--muted)">No students registered.</td></tr>';
+    }
+
+    document.getElementById("downloadCsv").addEventListener("click", () => {
+      const recs = todayRecords();
+      const rows = [["No", "Student ID", "Name", "Status", "Time"]];
+      db.students.forEach((s, i) => rows.push([i + 1, s.id, s.name, recs[s.id] ? "Present" : "Absent", recs[s.id] ? fmtTime(recs[s.id]) : ""]));
+      const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\r\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+      a.download = `attendance-${todayKey()}.csv`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+
+    document.getElementById("resetDay").addEventListener("click", () => {
+      if (!confirm("Clear today's attendance?")) return;
+      db.attendance[todayKey()] = {};
+      saveDb();
+      showResult("warn", "Attendance reset", "Today's register has been cleared.");
+      renderAll();
+    });
+
+    function renderAll() {
+      renderStudents();
+      renderSimChips();
+      renderRegister();
+    }
+    renderAll();
+
+    // =====================================================
+    //                       QUIZ
+    // =====================================================
     const quiz = [
-      { q: 'What does "QR" stand for?', options: ["Quick Read", "Quick Response", "Quality Record"], answer: 1 },
-      { q: "In which country was the QR code invented?", options: ["USA", "China", "Japan"], answer: 2 },
-      { q: "What was the QR code first used for?", options: ["Tracking car parts", "Paying in shops", "Restaurant menus"], answer: 0 },
-      { q: 'How many big "finder" squares does a QR code have?', options: ["2", "3", "4"], answer: 1 },
-      { q: "With High (H) error correction, how much of a QR code can be damaged and still work?", options: ["About 7%", "About 15%", "About 30%"], answer: 2 }
+      { q: "What information does a student's QR code usually hold in an attendance system?", options: ["Their exam results", "Their unique student ID", "Their home address"], answer: 1 },
+      { q: "Which problem does a QR attendance system help to reduce?", options: ["Proxy (fake) attendance", "Homework", "Long holidays"], answer: 0 },
+      { q: "What happens if the same student's card is scanned twice in one day?", options: ["They get marked twice", "The system crashes", "It says they're already present"], answer: 2 },
+      { q: "Where does a real QR attendance system store its records?", options: ["In a database", "On paper", "Inside the QR code"], answer: 0 },
+      { q: "What makes a dynamic QR code harder to cheat with?", options: ["It's very colourful", "It changes every few seconds", "It's bigger"], answer: 1 },
+      { q: 'What does "QR" stand for?', options: ["Quick Register", "Quality Record", "Quick Response"], answer: 2 }
     ];
     const quizBox = document.getElementById("quizBox");
     let qi = 0, score = 0;
@@ -1515,7 +1534,7 @@
       } else {
         btns[i].classList.add("wrong");
         fb.textContent = "Not quite — the right answer is highlighted.";
-        fb.style.color = "#e11d48";
+        fb.style.color = "var(--red)";
       }
       quizBox.querySelector(".quiz-top span:last-child").textContent = "Score: " + score;
       quizBox.querySelector(".progress div").style.width = ((qi + 1) / quiz.length) * 100 + "%";
@@ -1527,11 +1546,12 @@
     }
 
     function renderResult() {
-      const msgs = ["Keep learning — try again!", "Keep learning — try again!", "Good try!", "Nice work!", "Great job!", "Perfect score! You're a QR expert! 🏆"];
+      const pct = score / quiz.length;
+      const msg = pct === 1 ? "Perfect score! You're an attendance expert! 🏆" : pct >= 0.67 ? "Great job!" : pct >= 0.34 ? "Good try!" : "Keep learning — try again!";
       quizBox.innerHTML = `
         <div class="result">
           <div class="big grad-text">${score}/${quiz.length}</div>
-          <p>${msgs[score]}</p>
+          <p>${msg}</p>
           <button class="btn btn-primary" id="retry">Try Again</button>
         </div>`;
       document.getElementById("retry").addEventListener("click", () => { qi = 0; score = 0; renderQuestion(); });
