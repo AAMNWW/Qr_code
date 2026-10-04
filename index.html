@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All About QR Codes | Haiqa Tariq</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ---------- Navigation ---------- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--primary-dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      list-style: none;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    nav a {
+      display: block;
+      padding: 14px 16px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    nav a:hover { background: rgba(255,255,255,0.15); }
+
+    /* ---------- Header ---------- */
+    header {
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: #fff;
+      text-align: center;
+      padding: 70px 16px 60px;
+    }
+    header h1 { font-size: clamp(2rem, 6vw, 3.2rem); margin-bottom: 10px; }
+    header p.tagline { font-size: 1.2rem; opacity: 0.95; }
+    .student-badge {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+    .student-badge strong { color: #fde68a; }
+
+    /* ---------- Sections ---------- */
+    main { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+    section { padding: 56px 0 8px; }
+    h2 {
+      font-size: 1.9rem;
+      color: var(--primary-dark);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 4px solid var(--accent);
+      display: inline-block;
+    }
+    h3 { color: var(--primary); margin-bottom: 6px; }
+    p { margin-bottom: 14px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+    .icon { font-size: 2rem; margin-bottom: 6px; }
+
+    .fact-box {
+      background: #fef3c7;
+      border-left: 6px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 18px 0;
+    }
+
+    /* ---------- Timeline ---------- */
+    .timeline { border-left: 4px solid var(--primary); margin-left: 10px; padding-left: 24px; }
+    .timeline .event { position: relative; margin-bottom: 22px; }
+    .timeline .event::before {
+      content: "";
+      position: absolute;
+      left: -34px;
+      top: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .timeline .year { font-weight: 700; color: var(--primary); }
+
+    /* ---------- Table ---------- */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: var(--card); }
+    th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+    th { background: var(--primary); color: #fff; }
+    tr:nth-child(even) td { background: #f1f5f9; }
+
+    /* ---------- Pros / Cons ---------- */
+    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    .pros h3 { color: #16a34a; }
+    .cons h3 { color: #dc2626; }
+    .pros ul, .cons ul, .card ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+
+    /* ---------- Generator ---------- */
+    .generator { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: center; }
+    label { font-weight: 600; display: block; margin-bottom: 6px; }
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 14px;
+    }
+    input[type="text"]:focus, select:focus { outline: none; border-color: var(--primary); }
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px 22px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    button:hover { background: var(--primary-dark); }
+    button.secondary { background: var(--accent); color: #1e293b; }
+    #qrOutput {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 260px;
+      background: #fff;
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    #qrOutput img, #qrOutput canvas { max-width: 100%; }
+    .hint { color: var(--muted); font-size: 0.9rem; }
+
+    /* ---------- Quiz ---------- */
+    .question { margin-bottom: 20px; }
+    .question p { font-weight: 600; margin-bottom: 8px; }
+    .options label {
+      font-weight: 400;
+      display: block;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    .options label:hover { background: #eef2ff; }
+    .options label.correct { background: #dcfce7; border-color: #16a34a; }
+    .options label.wrong { background: #fee2e2; border-color: #dc2626; }
+    #quizResult { font-size: 1.2rem; font-weight: 700; margin-top: 10px; }
+
+    /* ---------- Footer ---------- */
+    footer {
+      margin-top: 60px;
+      background: var(--primary-dark);
+      color: #e0e7ff;
+      text-align: center;
+      padding: 30px 16px;
+    }
+    footer strong { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="#what">What is it?</a></li>
+      <li><a href="#history">History</a></li>
+      <li><a href="#how">How it Works</a></li>
+      <li><a href="#uses">Uses</a></li>
+      <li><a href="#pros-cons">Pros &amp; Cons</a></li>
+      <li><a href="#safety">Safety</a></li>
+      <li><a href="#generator">Make a QR</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>All About QR Codes</h1>
+    <p class="tagline">The little black-and-white squares that connect our world</p>
+    <div class="student-badge">
+      A school project by <strong>Haiqa Tariq</strong><br>
+      Oxbridge Secondary School
+    </div>
+  </header>
+
+  <main>
+
+    <!-- What is a QR code -->
+    <section id="what">
+      <h2>What is a QR Code?</h2>
+      <p>
+        A <strong>QR code</strong> (short for <strong>Quick Response code</strong>) is a type of
+        two-dimensional barcode. It is made of black squares arranged in a square grid on a white
+        background. A smartphone camera or a scanner can read it in less than a second and turn it
+        into useful information such as a website link, a phone number, a Wi-Fi password or a message.
+      </p>
+      <p>
+        A normal barcode (like the one on a chocolate bar) stores information in only one direction —
+        left to right. A QR code stores information both <strong>horizontally and vertically</strong>,
+        which is why it can hold much more data.
+      </p>
+      <div class="fact-box">
+        <strong>Did you know?</strong> A single QR code can store up to <strong>7,089 numbers</strong>
+        or <strong>4,296 letters and numbers</strong>, while a normal barcode holds only about 20 characters!
+      </div>
+    </section>
+
+    <!-- History -->
+    <section id="history">
+      <h2>History of the QR Code</h2>
+      <div class="timeline">
+        <div class="event">
+          <span class="year">1994</span>
+          <p>The QR code was invented in Japan by <strong>Masahiro Hara</strong>, an engineer at
+          <strong>Denso Wave</strong>, a company that is part of the Toyota group. It was created to
+          track car parts quickly in factories, because normal barcodes were too slow and held too little information.</p>
+        </div>
+        <div class="event">
+          <span class="year">Late 1990s</span>
+          <p>Denso Wave decided not to charge anyone for using the QR code design, so anyone in the
+          world could create and use QR codes for free. This helped it spread quickly.</p>
+        </div>
+        <div class="event">
+          <span class="year">2000s</span>
+          <p>QR codes became an international standard (ISO/IEC 18004) and mobile phones in Japan
+          started coming with QR code readers.</p>
+        </div>
+        <div class="event">
+          <span class="year">2017</span>
+          <p>Phone cameras on iPhone and Android started scanning QR codes automatically, with no extra app needed.</p>
+        </div>
+        <div class="event">
+          <span class="year">2020 – Today</span>
+          <p>During the COVID-19 pandemic, QR codes became part of everyday life for contactless menus,
+          payments, and check-ins. Today they are used almost everywhere!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how">
+      <h2>How Does a QR Code Work?</h2>
+      <p>
+        Every QR code is made of tiny squares called <strong>modules</strong>. A black module means
+        <strong>1</strong> and a white module means <strong>0</strong> — this is called
+        <strong>binary code</strong>, the language computers understand. The phone reads these
+        patterns and converts them back into text or a link.
+      </p>
+      <p>Each QR code has special parts that help the scanner read it:</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🔲</div>
+          <h3>Finder Patterns</h3>
+          <p>The three big squares in the corners. They tell the scanner where the code is and which way up it is.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🎯</div>
+          <h3>Alignment Pattern</h3>
+          <p>A smaller square near the bottom-right corner that helps read the code even if it is tilted or curved.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📏</div>
+          <h3>Timing Patterns</h3>
+          <p>Lines of alternating black and white squares that help the scanner work out the size of the grid.</p>
+        </div>
+        <div class="card">
+          <div class="icon">⬜</div>
+          <h3>Quiet Zone</h3>
+          <p>The empty white border around the code. It separates the QR code from everything around it.</p>
+        </div>
+        <div class="card">
+          <div class="icon">💾</div>
+          <h3>Data Area</h3>
+          <p>All the remaining squares, which hold the actual information plus backup data.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🛠️</div>
+          <h3>Error Correction</h3>
+          <p>Extra backup data that lets the code still work even if part of it is dirty, scratched or covered.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:28px;">Error Correction Levels</h3>
+      <p>QR codes can still be read even when part of them is damaged. There are four levels:</p>
+      <table>
+        <tr><th>Level</th><th>Name</th><th>Damage it can survive</th></tr>
+        <tr><td>L</td><td>Low</td><td>About 7%</td></tr>
+        <tr><td>M</td><td>Medium</td><td>About 15%</td></tr>
+        <tr><td>Q</td><td>Quartile</td><td>About 25%</td></tr>
+        <tr><td>H</td><td>High</td><td>About 30%</td></tr>
+      </table>
+      <div class="fact-box">
+        <strong>Fun fact:</strong> Because of error correction, some companies put their logo in the
+        middle of a QR code and it still scans perfectly!
+      </div>
+    </section>
+
+    <!-- Uses -->
+    <section id="uses">
+      <h2>Where Are QR Codes Used?</h2>
+      <div class="grid">
+        <div class="card"><div class="icon">🍽️</div><h3>Restaurants</h3><p>Digital menus and ordering food from your table.</p></div>
+        <div class="card"><div class="icon">💳</div><h3>Payments</h3><p>Paying in shops using mobile wallets and banking apps.</p></div>
+        <div class="card"><div class="icon">🎫</div><h3>Tickets</h3><p>Boarding passes, cinema tickets and event entry.</p></div>
+        <div class="card"><div class="icon">🏫</div><h3>Education</h3><p>Linking worksheets to videos, quizzes and online lessons.</p></div>
+        <div class="card"><div class="icon">📦</div><h3>Shipping</h3><p>Tracking parcels and products in warehouses.</p></div>
+        <div class="card"><div class="icon">📶</div><h3>Wi-Fi Sharing</h3><p>Connecting to Wi-Fi without typing a long password.</p></div>
+        <div class="card"><div class="icon">🏥</div><h3>Healthcare</h3><p>Patient wristbands and medicine information.</p></div>
+        <div class="card"><div class="icon">📢</div><h3>Advertising</h3><p>Posters and products that link to websites and offers.</p></div>
+      </div>
+    </section>
+
+    <!-- Pros and cons -->
+    <section id="pros-cons">
+      <h2>Advantages &amp; Disadvantages</h2>
+      <div class="two-col">
+        <div class="card pros">
+          <h3>✅ Advantages</h3>
+          <ul>
+            <li>Very fast to scan — "Quick Response"</li>
+            <li>Stores much more data than a normal barcode</li>
+            <li>Free to create and use</li>
+            <li>Works even when partly damaged</li>
+            <li>Can be scanned from any angle</li>
+            <li>Contactless and hygienic</li>
+            <li>Saves paper (e.g. digital menus)</li>
+          </ul>
+        </div>
+        <div class="card cons">
+          <h3>❌ Disadvantages</h3>
+          <ul>
+            <li>You need a smartphone or scanner to read it</li>
+            <li>Often needs internet to open links</li>
+            <li>Humans can't tell where a code leads just by looking</li>
+            <li>Scammers can use fake QR codes</li>
+            <li>Does not work well if printed too small or blurry</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Safety -->
+    <section id="safety">
+      <h2>Staying Safe with QR Codes</h2>
+      <p>Some people create fake QR codes to trick others (this is called <strong>"quishing"</strong> — QR phishing). Follow these tips:</p>
+      <div class="card">
+        <ul>
+          <li>🔍 <strong>Check the link</strong> your phone shows before opening it.</li>
+          <li>🏷️ <strong>Look for stickers</strong> placed on top of real QR codes in public places.</li>
+          <li>🔐 <strong>Never enter passwords</strong> or bank details on a site opened from an unknown QR code.</li>
+          <li>📲 <strong>Don't download apps</strong> from QR codes unless you trust the source.</li>
+          <li>👨‍👩‍👧 <strong>Ask an adult</strong> if you're not sure whether a QR code is safe.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Generator -->
+    <section id="generator">
+      <h2>Make Your Own QR Code!</h2>
+      <p>Type anything below — a website, a message, or your name — and create your own QR code. Then scan it with a phone camera!</p>
+      <div class="card generator">
+        <div>
+          <label for="qrText">Text or website link</label>
+          <input type="text" id="qrText" value="Hello from Haiqa Tariq, Oxbridge Secondary School!">
+
+          <label for="qrColor">Colour</label>
+          <select id="qrColor">
+            <option value="#000000">Black</option>
+            <option value="#3730a3">Indigo</option>
+            <option value="#b91c1c">Red</option>
+            <option value="#15803d">Green</option>
+            <option value="#7c3aed">Purple</option>
+          </select>
+
+          <button id="makeBtn">Generate QR Code</button>
+          <button id="downloadBtn" class="secondary">Download</button>
+          <p class="hint" id="qrHint">Tip: Open your phone camera and point it at the code.</p>
+        </div>
+        <div id="qrOutput"></div>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz">
+      <h2>Test Your Knowledge</h2>
+      <div class="card" id="quizBox">
+        <div class="question" data-answer="b">
+          <p>1. What does "QR" stand for?</p>
+          <div class="options">
+            <label><input type="radio" name="q1" value="a"> Quick Read</label>
+            <label><input type="radio" name="q1" value="b"> Quick Response</label>
+            <label><input type="radio" name="q1" value="c"> Quality Record</label>
+          </div>
+        </div>
+        <div class="question" data-answer="c">
+          <p>2. In which country was the QR code invented?</p>
+          <div class="options">
+            <label><input type="radio" name="q2" value="a"> USA</label>
+            <label><input type="radio" name="q2" value="b"> China</label>
+            <label><input type="radio" name="q2" value="c"> Japan</label>
+          </div>
+        </div>
+        <div class="question" data-answer="a">
+          <p>3. What was the QR code first used for?</p>
+          <div class="options">
+            <label><input type="radio" name="q3" value="a"> Tracking car parts</label>
+            <label><input type="radio" name="q3" value="b"> Paying in shops</label>
+            <label><input type="radio" name="q3" value="c"> Restaurant menus</label>
+          </div>
+        </div>
+        <div class="question" data-answer="b">
+          <p>4. How many big "finder" squares does a QR code have?</p>
+          <div class="options">
+            <label><input type="radio" name="q4" value="a"> 2</label>
+            <label><input type="radio" name="q4" value="b"> 3</label>
+            <label><input type="radio" name="q4" value="c"> 4</label>
+          </div>
+        </div>
+        <div class="question" data-answer="c">
+          <p>5. With the highest error correction (H), how much of a QR code can be damaged and still work?</p>
+          <div class="options">
+            <label><input type="radio" name="q5" value="a"> About 7%</label>
+            <label><input type="radio" name="q5" value="b"> About 15%</label>
+            <label><input type="radio" name="q5" value="c"> About 30%</label>
+          </div>
+        </div>
+        <button id="checkQuiz">Check Answers</button>
+        <button id="resetQuiz" class="secondary">Try Again</button>
+        <div id="quizResult"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Made by <strong>Haiqa Tariq</strong> &middot; Oxbridge Secondary School</p>
+    <p>School Project: <strong>QR Codes</strong></p>
+  </footer>
+
+  <!-- QR code library (needs internet) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    // ----- QR Generator -----
+    const output = document.getElementById("qrOutput");
+    const hint = document.getElementById("qrHint");
+
+    function makeQR() {
+      const text = document.getElementById("qrText").value.trim();
+      output.innerHTML = "";
+      if (typeof QRCode === "undefined") {
+        output.textContent = "Please connect to the internet to use the QR code maker.";
+        return;
+      }
+      if (!text) {
+        output.textContent = "Please type something first!";
+        return;
+      }
+      new QRCode(output, {
+        text: text,
+        width: 220,
+        height: 220,
+        colorDark: document.getElementById("qrColor").value,
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      hint.textContent = "Tip: Open your phone camera and point it at the code.";
+    }
+
+    function downloadQR() {
+      const canvas = output.querySelector("canvas");
+      if (!canvas) { makeQR(); return; }
+      const link = document.createElement("a");
+      link.download = "my-qr-code.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+
+    document.getElementById("makeBtn").addEventListener("click", makeQR);
+    document.getElementById("downloadBtn").addEventListener("click", downloadQR);
+    document.getElementById("qrText").addEventListener("keydown", e => {
+      if (e.key === "Enter") makeQR();
+    });
+    window.addEventListener("load", makeQR);
+
+    // ----- Quiz -----
+    const questions = document.querySelectorAll(".question");
+    const result = document.getElementById("quizResult");
+
+    document.getElementById("checkQuiz").addEventListener("click", () => {
+      let score = 0;
+      questions.forEach(q => {
+        const answer = q.dataset.answer;
+        q.querySelectorAll("label").forEach(label => {
+          label.classList.remove("correct", "wrong");
+          const input = label.querySelector("input");
+          if (input.value === answer) label.classList.add("correct");
+          else if (input.checked) label.classList.add("wrong");
+        });
+        const chosen = q.querySelector("input:checked");
+        if (chosen && chosen.value === answer) score++;
+      });
+      const messages = ["Keep learning!", "Keep learning!", "Good try!", "Nice work!", "Great job!", "Perfect score! You're a QR expert!"];
+      result.textContent = `You scored ${score} out of ${questions.length}. ${messages[score]}`;
+    });
+
+    document.getElementById("resetQuiz").addEventListener("click", () => {
+      document.querySelectorAll("#quizBox input").forEach(i => i.checked = false);
+      document.querySelectorAll("#quizBox label").forEach(l => l.classList.remove("correct", "wrong"));
+      result.textContent = "";
+    });
+  </script>
+</body>
+</html>
