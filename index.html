@@ -490,6 +490,34 @@
     .future b { color: var(--ink); display: block; margin-top: 6px; }
     .future small { color: var(--muted); }
 
+    /* QR generator */
+    .gen { display: grid; grid-template-columns: 1.1fr .9fr; padding: 0; overflow: hidden; }
+    .gen-form { padding: 40px; }
+    .gen-form .input { display: block; width: 100%; margin-bottom: 22px; }
+    .gen-preview {
+      background: linear-gradient(135deg, #f3e8ff, #fce7f3 50%, #e0f2fe);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; gap: 18px;
+    }
+    .qr-frame { background: #fff; padding: 18px; border-radius: 22px; box-shadow: var(--shadow-lg); }
+    #qrOutput { width: 220px; height: 220px; display: grid; place-items: center; text-align: center; color: var(--muted); font-size: .9rem; }
+    #qrOutput img, #qrOutput canvas { width: 220px !important; height: 220px !important; }
+    .gen-preview small { color: var(--muted); text-align: center; }
+    label.field { display: block; font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+    .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 22px; }
+    .preset {
+      padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border); background: #fff;
+      font-size: .85rem; cursor: pointer; transition: border-color .2s, background .2s;
+    }
+    .preset:hover { border-color: var(--violet); background: #f5f0ff; }
+    .colors { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .color {
+      width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--border);
+      cursor: pointer; transition: transform .2s, box-shadow .2s;
+    }
+    .color:hover { transform: scale(1.1); }
+    .color.active { box-shadow: 0 0 0 3px var(--ink); }
+    .gen-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
     /* Quiz */
     .quiz { max-width: 760px; margin: 0 auto; padding: 40px; }
     .quiz-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; color: var(--muted); font-size: .9rem; }
@@ -576,7 +604,7 @@
 
     /* ================= RESPONSIVE ================= */
     @media (max-width: 960px) {
-      .hero-grid, .two, .sec-inner, .scanner-layout, .methods { grid-template-columns: 1fr; }
+      .hero-grid, .two, .sec-inner, .scanner-layout, .methods, .gen { grid-template-columns: 1fr; }
       .hero { text-align: center; }
       .hero p.lead { margin-left: auto; margin-right: auto; }
       .hero-actions, .hero-team { justify-content: center; }
@@ -593,7 +621,7 @@
       .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
       .team-grid { grid-template-columns: 1fr; }
       .dark-box { padding: 36px 22px; }
-      .panel, .quiz { padding: 24px 18px; }
+      .panel, .quiz, .gen-form { padding: 24px 18px; }
       .note { margin: 0 18px 24px; }
       .reg-top { grid-template-columns: 1fr; justify-items: center; }
       .reg-stats { width: 100%; }
@@ -623,6 +651,7 @@
         <li><a href="#how">How it Works</a></li>
         <li><a href="#benefits">Benefits</a></li>
         <li><a href="#security">Security</a></li>
+        <li><a href="#generator">Make a QR</a></li>
         <li><a href="#quiz">Quiz</a></li>
         <li><a href="#team">Our Team</a></li>
         <li><a href="#demo" class="cta">Try Demo</a></li>
@@ -1086,6 +1115,49 @@
       </div>
     </section>
 
+    <!-- ================= GENERATOR ================= -->
+    <section class="block" id="generator">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Try it Yourself</span>
+          <h2>Make Your Own <span class="grad-text">QR Code</span></h2>
+          <p>Type anything, pick a colour, and scan the result with your phone.</p>
+        </div>
+
+        <div class="card gen reveal">
+          <div class="gen-form">
+            <label class="field" for="qrText">Text or website link</label>
+            <input class="input" type="text" id="qrText" value="Hello from Haiqa, Jannat & Zainab!">
+            <div class="presets">
+              <button class="preset" data-text="Hello from Haiqa, Jannat & Zainab!">👋 Hello</button>
+              <button class="preset" data-text="https://haiqa-tariq-qr-codes.vercel.app">🌐 Our website</button>
+              <button class="preset" data-text="OSS-ATTENDANCE|OSS-002|Jannat">🪪 Jannat's attendance card</button>
+              <button class="preset" data-text="QR stands for Quick Response!">💡 Fun fact</button>
+            </div>
+
+            <label class="field">Colour</label>
+            <div class="colors">
+              <button class="color active" data-color="#0b1026" style="background:#0b1026" aria-label="Black"></button>
+              <button class="color" data-color="#7c3aed" style="background:#7c3aed" aria-label="Purple"></button>
+              <button class="color" data-color="#db2777" style="background:#db2777" aria-label="Pink"></button>
+              <button class="color" data-color="#0891b2" style="background:#0891b2" aria-label="Cyan"></button>
+              <button class="color" data-color="#059669" style="background:#059669" aria-label="Green"></button>
+              <button class="color" data-color="#c2410c" style="background:#c2410c" aria-label="Orange"></button>
+            </div>
+
+            <div class="gen-actions">
+              <button class="btn btn-primary" id="makeBtn">✨ Generate</button>
+              <button class="btn btn-light" id="downloadBtn">⬇ Download</button>
+            </div>
+          </div>
+          <div class="gen-preview">
+            <div class="qr-frame"><div id="qrOutput"></div></div>
+            <small>Point your phone camera at the code to test it.<br>Tip: make Jannat's card here, then scan it in the demo above!</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ================= QUIZ ================= -->
     <section class="block" id="quiz">
       <div class="container">
@@ -1493,6 +1565,41 @@
       renderRegister();
     }
     renderAll();
+
+    // =====================================================
+    //                  MAKE YOUR OWN QR
+    // =====================================================
+    const qrOutput = document.getElementById("qrOutput");
+    const qrText = document.getElementById("qrText");
+    let qrColor = "#0b1026";
+
+    function makeQR() {
+      const text = qrText.value.trim();
+      if (!text) { qrOutput.innerHTML = ""; qrOutput.textContent = "Type something first!"; return; }
+      drawQR(qrOutput, text, 220, qrColor);
+    }
+    document.querySelectorAll(".color").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".color").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        qrColor = btn.dataset.color;
+        makeQR();
+      });
+    });
+    document.querySelectorAll(".preset").forEach(btn => {
+      btn.addEventListener("click", () => { qrText.value = btn.dataset.text; makeQR(); });
+    });
+    document.getElementById("makeBtn").addEventListener("click", makeQR);
+    qrText.addEventListener("keydown", e => { if (e.key === "Enter") makeQR(); });
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      const canvas = qrOutput.querySelector("canvas");
+      if (!canvas) { makeQR(); return; }
+      const a = document.createElement("a");
+      a.download = "my-qr-code.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    });
+    makeQR();
 
     // =====================================================
     //                       QUIZ
